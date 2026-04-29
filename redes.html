@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía - Intoducción a las redes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --pantone-7545: #465973;
+            --pantone-465: #B9975B;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: var(--pantone-7545);
+        }
+
+        /* Utilidades de color personalizadas */
+        .bg-unrc-blue { background-color: var(--pantone-7545); }
+        .text-unrc-blue { color: var(--pantone-7545); }
+        .bg-unrc-gold { background-color: var(--pantone-465); }
+        .text-unrc-gold { color: var(--pantone-465); }
+        .border-unrc-gold { border-color: var(--pantone-465); }
+        .border-unrc-blue { border-color: var(--pantone-7545); }
+
+        .card-shadow {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card-shadow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-wrapper-large {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            margin: 0 auto;
+        }
+
+        .chart-wrapper-med {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            margin: 0 auto;
+        }
+
+        .img-card {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        .geo-card-h {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .nav-item {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--pantone-465);
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover {
+            color: var(--pantone-465);
+            transform: translateY(-2px);
+        }
+        .nav-item:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased scroll-smooth">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white border-b-4 border-unrc-gold shadow-md">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo UNRC -->
+            <div class="flex items-center">
+                <img src="imagenes/unrc.png" 
+                     alt="Logo UNRC" class="h-16 w-auto object-contain">
+            </div>
+            <nav>
+                <a href="index.html" class="nav-item text-unrc-blue font-bold text-sm uppercase tracking-wide">
+                    Inicio
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-unrc-blue text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white"></path>
+            </svg>
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h1 class="text-5xl md:text-7xl font-black mb-4 tracking-tighter">Intoducción a las redes</h1>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-16 max-w-7xl">
+        
+        <!-- 1. Clasificación Geográfica -->
+        <section class="mb-24">
+            <div class="flex items-center gap-6 mb-12">
+                <h2 class="text-4xl font-black text-unrc-blue tracking-tight">Clasificación geográfica</h2>
+                <div class="flex-grow h-1 bg-gradient-to-r from-unrc-gold to-transparent"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div class="card-shadow p-8 border-t-8 border-unrc-gold geo-card-h">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <i data-lucide="bluetooth" class="w-6 h-6 text-unrc-gold"></i>
+                            <h3 class="font-black text-xl text-unrc-blue">PAN</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed">Redes de área personal. Conecta dispositivos en un rango de 10 metros.</p>
+                    </div>
+                    <p class="mt-4 text-[10px] font-bold text-unrc-gold uppercase tracking-widest italic">Ejemplo: Audífonos inalámbricos</p>
+                </div>
+
+                <div class="card-shadow p-8 border-t-8 border-unrc-blue geo-card-h">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <i data-lucide="wifi" class="w-6 h-6 text-unrc-blue"></i>
+                            <h3 class="font-black text-xl text-unrc-blue">LAN</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed">Redes locales. Alcance hasta 1 km en edificios o campus.</p>
+                    </div>
+                    <p class="mt-4 text-[10px] font-bold text-unrc-blue uppercase tracking-widest italic">Ejemplo: Wi-Fi doméstico</p>
+                </div>
+
+                <div class="card-shadow p-8 border-t-8 border-unrc-gold geo-card-h">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <i data-lucide="building" class="w-6 h-6 text-unrc-gold"></i>
+                            <h3 class="font-black text-xl text-unrc-blue">MAN</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed">Redes metropolitanas. Cubren ciudades hasta 50 km.</p>
+                    </div>
+                    <p class="mt-4 text-[10px] font-bold text-unrc-gold uppercase tracking-widest italic">Ejemplo: Fibra óptica municipal</p>
+                </div>
+
+                <div class="card-shadow p-8 border-t-8 border-unrc-blue geo-card-h">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <i data-lucide="earth" class="w-6 h-6 text-unrc-blue"></i>
+                            <h3 class="font-black text-xl text-unrc-blue">WAN</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed">Redes de área amplia. Conectan países y continentes.</p>
+                    </div>
+                    <p class="mt-4 text-[10px] font-bold text-unrc-blue uppercase tracking-widest italic">Ejemplo: La red global Internet</p>
+                </div>
+            </div>
+
+            <!-- Gráfica de Alcance con barras más anchas -->
+            <div class="bg-white p-10 rounded-3xl shadow-sm border border-gray-100">
+                <h4 class="text-center font-bold text-unrc-blue tracking-widest text-sm mb-10">Comparativa de alcance teórico (Escala logarítmica)</h4>
+                <div class="chart-wrapper-med">
+                    <canvas id="rangeChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Componentes -->
+        <section class="mb-24 bg-gray-50 -mx-6 px-6 py-20 rounded-[3rem]">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black text-unrc-blue tracking-tight">Componentes esenciales</h2>
+                <div class="w-24 h-2 bg-unrc-gold mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="card-shadow overflow-hidden group border-b-8 border-unrc-gold">
+                    <img src="imagenes/computadora.webp" alt="Hosts" class="img-card group-hover:scale-105 transition-transform duration-500">
+                    <div class="p-8">
+                        <h3 class="font-black text-2xl mb-4 text-unrc-blue">Dispositivos finales</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">Conocidos como <strong>Hosts</strong>. Son las terminales con las que interactúa el usuario directamente.</p>
+                    </div>
+                </div>
+
+                <div class="card-shadow overflow-hidden group border-b-8 border-unrc-blue">
+                    <img src="imagenes/routers.jpg" alt="Infraestructura" class="img-card group-hover:scale-105 transition-transform duration-500">
+                    <div class="p-8">
+                        <h3 class="font-black text-2xl mb-4 text-unrc-blue">Dispositivos intermedios</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">Garantizan la conectividad y el flujo de datos entre los hosts de manera inteligente.</p>
+                    </div>
+                </div>
+
+                <div class="card-shadow overflow-hidden group border-b-8 border-unrc-gold">
+                    <img src="imagenes/cable.jpg" alt="Medios" class="img-card group-hover:scale-105 transition-transform duration-500">
+                    <div class="p-8">
+                        <h3 class="font-black text-2xl mb-4 text-unrc-blue">Medios de red</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">El canal por el cual viaja la señal. Define la velocidad y la distancia de transmisión.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Topologías -->
+        <section class="mb-24">
+            <div class="flex items-center gap-6 mb-16">
+                <h2 class="text-4xl font-black text-unrc-blue tracking-tight text-right">Topologías de red</h2>
+                <div class="flex-grow h-1 bg-gradient-to-l from-unrc-gold to-transparent"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <!-- Bus -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-200 flex gap-8 items-center group">
+                    <div class="w-32 h-32 flex-shrink-0 bg-gray-100 rounded-2xl overflow-hidden shadow-inner">
+                        <img src="imagenes/topologia-bus.avif" alt="Bus" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-black text-xl text-unrc-blue mb-2">Bus (Backbone)</h4>
+                        <p class="text-sm text-gray-500">Económica pero vulnerable: si el cable central falla, toda la red se pierde.</p>
+                    </div>
+                </div>
+                <!-- Estrella -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-200 flex gap-8 items-center group">
+                    <div class="w-32 h-32 flex-shrink-0 bg-gray-100 rounded-2xl overflow-hidden shadow-inner">
+                        <img src="imagenes/topologia-estrella.avif" alt="Star" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-black text-xl text-unrc-blue mb-2">Estrella (HUB)</h4>
+                        <p class="text-sm text-gray-500">Centralizada: fácil de expandir y tolerante a fallas de nodos individuales.</p>
+                    </div>
+                </div>
+                <!-- Anillo -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-200 flex gap-8 items-center group">
+                    <div class="w-32 h-32 flex-shrink-0 bg-gray-100 rounded-2xl overflow-hidden shadow-inner">
+                        <img src="imagenes/topologia-anillo.avif" alt="Ring" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-black text-xl text-unrc-blue mb-2">Anillo (Circular)</h4>
+                        <p class="text-sm text-gray-500">Evita colisiones de tráfico, pero un nodo caído rompe la comunicación.</p>
+                    </div>
+                </div>
+                <!-- Malla -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-200 flex gap-8 items-center group">
+                    <div class="w-32 h-32 flex-shrink-0 bg-gray-100 rounded-2xl overflow-hidden shadow-inner">
+                        <img src="imagenes/topologia-malla.avif" alt="Mesh" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-black text-xl text-unrc-blue mb-2">Malla (Redundante)</h4>
+                        <p class="text-sm text-gray-500">Máxima resiliencia: nodos interconectados para evitar puntos de falla únicos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Protocolos (Fondo Azul Solicitado) -->
+        <section class="mb-12">
+            <div class="bg-unrc-blue p-12 md:p-16 rounded-[3rem] text-white shadow-2xl relative overflow-hidden">
+                <div class="relative z-10">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl font-black text-unrc-gold  tracking-tight mb-4">Protocolos: TCP vs. UDP</h2>
+                        <p class="text-lg opacity-80 max-w-2xl mx-auto">Comparativa entre integridad de datos y velocidad de transmisión.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
+                        <div class="lg:col-span-2 space-y-8">
+                            <div class="p-6 bg-white/10 rounded-2xl border border-white/20 backdrop-blur">
+                                <h4 class="font-black text-unrc-gold text-xl mb-3">TCP (Transmisión controlada)</h4>
+                                <ul class="text-xs space-y-2 opacity-90">
+                                    <li>• Confirmación de llegada (ACK)</li>
+                                    <li>• Reenvío de paquetes perdidos</li>
+                                    <li>• Ordenamiento garantizado</li>
+                                </ul>
+                            </div>
+                            <div class="p-6 bg-white/10 rounded-2xl border border-white/20 backdrop-blur">
+                                <h4 class="font-black text-white text-xl mb-3">UDP (Datagrama de usuario)</h4>
+                                <ul class="text-xs space-y-2 opacity-90">
+                                    <li>• Sin confirmación (más rápido)</li>
+                                    <li>• Baja latencia (tiempo real)</li>
+                                    <li>• Ideal para Streaming y Juegos</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-3 bg-white p-10 rounded-[2rem] shadow-inner">
+                            <h4 class="text-unrc-blue font-black text-center text-sm uppercase tracking-widest mb-10">Atributos de Rendimiento</h4>
+                            <div class="chart-wrapper-large">
+                                <canvas id="protocolChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Azul UNRC -->
+    <footer class="py-12 text-white bg-unrc-blue border-t-8 border-unrc-gold">
+        <div class="container mx-auto px-4 text-center space-y-2">
+            <p class="text-lg font-bold uppercase tracking-widest leading-tight">Universidad Nacional Rosario Castellanos</p>
+            <p class="text-sm font-light opacity-80">Material creado para la licenciatura a distancia LTIC</p>
+            <p class="text-sm font-bold tracking-[0.3em] text-unrc-gold">UCA: Redes | Módulo 1</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const wrapLabel = (label) => {
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > 16) {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        };
+
+        // 1. Gráfica de Alcance (Barras más anchas)
+        const ctxRange = document.getElementById('rangeChart').getContext('2d');
+        new Chart(ctxRange, {
+            type: 'bar',
+            data: {
+                labels: ['PAN', 'LAN', 'MAN', 'WAN'].map(wrapLabel),
+                datasets: [{
+                    label: 'Alcance (Metros)',
+                    data: [10, 1000, 50000, 10000000],
+                    backgroundColor: ['#B9975B', '#465973', '#B9975B', '#465973'],
+                    borderRadius: 8,
+                    barPercentage: 0.8, // Ensancha las barras respecto a la categoría
+                    categoryPercentage: 0.9 // Ensancha el espacio de la categoría
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { 
+                        type: 'logarithmic',
+                        title: { display: true, text: 'Distancia (Metros)', font: { weight: 'bold' } }
+                    }
+                }
+            }
+        });
+
+        // 2. Gráfica de Protocolos
+        const ctxProto = document.getElementById('protocolChart').getContext('2d');
+        new Chart(ctxProto, {
+            type: 'radar',
+            data: {
+                labels: [
+                    'Fiabilidad', 'Velocidad', 'Orden', 'Eficiencia', 'Control Errores', 'Streaming'
+                ].map(wrapLabel),
+                datasets: [
+                    {
+                        label: 'TCP',
+                        data: [10, 3, 10, 4, 10, 4],
+                        borderColor: '#B9975B',
+                        backgroundColor: 'rgba(185, 151, 91, 0.25)',
+                        borderWidth: 3,
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'UDP',
+                        data: [2, 10, 1, 10, 1, 10],
+                        borderColor: '#465973',
+                        backgroundColor: 'rgba(70, 89, 115, 0.15)',
+                        borderWidth: 3,
+                        pointRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        suggestedMin: 0,
+                        suggestedMax: 10,
+                        ticks: { display: false },
+                        pointLabels: {
+                            font: { size: 12, weight: 'bold' },
+                            color: '#465973'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

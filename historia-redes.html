@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia de las Redes - Infografía</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --pantone-7545: #425563;
+            --pantone-465: #B9975B;
+            --footer-blue: #465973;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: var(--pantone-7545);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            margin: auto;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--pantone-465) 0%, var(--pantone-7545) 100%);
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-line { left: 30px; transform: none; }
+        }
+
+        .milestone-item {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 4rem;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .milestone-card {
+            overflow: hidden;
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .milestone-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
+        }
+
+        .dot {
+            width: 24px;
+            height: 24px;
+            background-color: var(--pantone-465);
+            border: 4px solid white;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(185, 151, 91, 0.6);
+            top: 2rem;
+            z-index: 20;
+        }
+
+        @media (max-width: 768px) {
+            .dot { left: 30px; transform: translateX(-50%); }
+        }
+
+        .bg-primary { background-color: var(--pantone-7545); }
+        .text-primary { color: var(--pantone-7545); }
+        .text-secondary { color: var(--pantone-465); }
+        .border-secondary { border-color: var(--pantone-465); }
+        
+        .milestone-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background-color: #e2e8f0;
+        }
+
+        /* Efecto de menú personalizado */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--pantone-465);
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover {
+            color: var(--pantone-465);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .nav-item:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header Blanco -->
+    <header class="sticky top-0 z-50 bg-white border-b-4 border-secondary shadow-md">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo UNRC -->
+            <div class="flex items-center">
+                <img src="imagenes/unrc.png" 
+                     alt="Logo UNRC" class="h-16 w-auto object-contain">
+            </div>
+            <nav>
+                <a href="index.html" class="nav-item text-primary font-bold text-sm uppercase tracking-wide">
+                    Inicio
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-primary text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white"></path>
+            </svg>
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h2 class="text-5xl md:text-7xl font-black mb-4 tracking-tighter">Historia de las redes</h2>
+        </div>
+    </section>
+
+    <!-- Introducción y Propósito -->
+    <section class="py-16 container mx-auto px-6 max-w-6xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-secondary">
+                <h3 class="text-2xl font-bold mb-4 flex items-center">
+                    <i data-lucide="target" class="mr-2 text-secondary"></i> El origen del nodo
+                </h3>
+                <p class="text-gray-600 leading-relaxed text-justify mb-4">
+                    La evolución de las redes computacionales no es solo técnica, es una respuesta a la necesidad humana de resiliencia. Basado en el <strong>Módulo 1 de la UNRC</strong>, exploramos cómo pasamos de arquitecturas rígidas a la flexibilidad del modelo <strong>TCP/IP</strong>.
+                </p>
+                <div class="flex space-x-4">
+                    <div class="flex flex-col items-center p-3 bg-gray-50 rounded-xl flex-1">
+                        <span class="text-2xl font-bold text-secondary">60+</span>
+                        <span class="text-xs uppercase font-semibold opacity-60">Años de Historia</span>
+                    </div>
+                    <div class="flex flex-col items-center p-3 bg-gray-50 rounded-xl flex-1">
+                        <span class="text-2xl font-bold text-secondary">5.4B</span>
+                        <span class="text-xs uppercase font-semibold opacity-60">Usuarios hoy</span>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <h3 class="text-3xl font-black tracking-tight">Datos de valor</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start p-4 bg-white rounded-2xl shadow-sm border-l-4 border-primary">
+                        <i data-lucide="zap" class="w-6 h-6 mr-4 text-secondary"></i>
+                        <p class="text-sm"><strong>Velocidad:</strong> En 1990 la velocidad promedio era de 56 Kbps; hoy superamos los 100 Mbps en hogares.</p>
+                    </div>
+                    <div class="flex items-start p-4 bg-white rounded-2xl shadow-sm border-l-4 border-primary">
+                        <i data-lucide="database" class="w-6 h-6 mr-4 text-secondary"></i>
+                        <p class="text-sm"><strong>Tráfico:</strong> Se estima que el tráfico IP anual superará los 4.8 Zettabytes para finales de la década.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gráficas de Crecimiento -->
+    <section class="bg-gray-200/50 py-16 border-y border-gray-300">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <h3 class="text-3xl font-black text-center mb-12">Crecimiento y escala</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-white p-8 rounded-3xl shadow-lg">
+                    <h4 class="font-bold mb-6 text-center text-primary">Crecimiento de usuarios (1995 - 2024)</h4>
+                    <div class="chart-container">
+                        <canvas id="usersChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-lg">
+                    <h4 class="font-bold mb-6 text-center text-primary">Evolución de velocidad de transmisión</h4>
+                    <div class="chart-container">
+                        <canvas id="speedChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Línea de Tiempo Maestras (24 Hitos) -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <h3 class="text-4xl font-black text-center mb-16">Cronología</h3>
+            
+            <div class="timeline-container" id="timeline">
+                <div class="timeline-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Hardware (Módulo 1) -->
+    <section class="py-16 bg-gray-800 text-white">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <h3 class="text-3xl font-black mb-12 text-center text-secondary">Evolución del hardware de red</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-8 bg-gray-700 rounded-3xl border-b-8 border-secondary transition-transform hover:scale-105">
+                    <i data-lucide="layers" class="w-10 h-10 mb-4 text-secondary"></i>
+                    <h4 class="text-xl font-bold mb-2">Puentes & repetidores</h4>
+                    <p class="text-sm opacity-80">Los primeros dispositivos que permitieron segmentar y extender el alcance de las señales eléctricas en redes primitivas.</p>
+                </div>
+                <div class="p-8 bg-gray-700 rounded-3xl border-b-8 border-primary transition-transform hover:scale-105">
+                    <i data-lucide="shuffle" class="w-10 h-10 mb-4 text-secondary"></i>
+                    <h4 class="text-xl font-bold mb-2">Switches (Capa 2)</h4>
+                    <p class="text-sm opacity-80">Revolucionaron la eficiencia al aprender direcciones MAC y evitar colisiones innecesarias en redes LAN.</p>
+                </div>
+                <div class="p-8 bg-gray-700 rounded-3xl border-b-8 border-secondary transition-transform hover:scale-105">
+                    <i data-lucide="navigation" class="w-10 h-10 mb-4 text-secondary"></i>
+                    <h4 class="text-xl font-bold mb-2">Routers (Capa 3)</h4>
+                    <p class="text-sm opacity-80">Los "arquitectos" de la red global. Toman decisiones inteligentes de ruta basándose en direcciones IP lógicas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Azul UNRC -->
+    <footer class="py-12 text-white border-t-8 border-secondary" style="background-color: var(--footer-blue);">
+        <div class="container mx-auto px-4 text-center space-y-2">
+            <p class="text-lg font-bold uppercase tracking-widest text-white leading-tight">Universidad Nacional Rosario Castellanos</p>
+            <p class="text-sm font-light opacity-80">Material creado para la licenciatura a distancia LTIC</p>
+            <p class="text-sm font-bold tracking-[0.3em] text-secondary">UCA: Redes | Módulo 1</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Configuración común
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { labels: { color: '#425563', font: { weight: 'bold' } } }
+            },
+            scales: {
+                y: { grid: { color: '#e5e7eb' }, ticks: { color: '#425563' } },
+                x: { grid: { display: false }, ticks: { color: '#425563' } }
+            }
+        };
+
+        // Gráfico de Usuarios
+        new Chart(document.getElementById('usersChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['1995', '2000', '2005', '2010', '2015', '2020', '2024'],
+                datasets: [{
+                    label: 'Usuarios (Millones)',
+                    data: [16, 361, 1018, 1971, 3270, 4660, 5440],
+                    borderColor: '#B9975B',
+                    backgroundColor: 'rgba(185, 151, 91, 0.2)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 4,
+                    pointBackgroundColor: '#425563'
+                }]
+            },
+            options: commonOptions
+        });
+
+        // Gráfico de Velocidad - Azul Institucional (#425563)
+        const speedCtx = document.getElementById('speedChart').getContext('2d');
+        const speedChart = new Chart(speedCtx, {
+            type: 'bar',
+            data: {
+                labels: ['1990 (Dial-Up)', '2000 (DSL)', '2010 (Fibra)', '2024 (5G/WiFi)'],
+                datasets: [{
+                    label: 'Velocidad (Mbps)',
+                    data: [0.056, 10, 100, 1000],
+                    backgroundColor: '#425563', // Azul Institucional
+                    borderRadius: 8,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                ...commonOptions,
+                plugins: {
+                    ...commonOptions.plugins,
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#425563', font: { weight: 'bold' } } },
+                    y: { 
+                        type: 'logarithmic',
+                        min: 0.01,
+                        suggestedMax: 2000,
+                        ticks: {
+                            color: '#425563',
+                            callback: function(value) {
+                                if (value === 0.1) return "0.1 Mbps";
+                                if (value === 1) return "1 Mbps";
+                                if (value === 10) return "10 Mbps";
+                                if (value === 100) return "100 Mbps";
+                                if (value === 1000) return "1 Gbps";
+                                return null;
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [{
+                id: 'customLabels',
+                afterDatasetsDraw(chart) {
+                    const { ctx, data } = chart;
+                    ctx.save();
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    ctx.font = 'bold 12px Segoe UI';
+                    ctx.fillStyle = '#425563';
+
+                    chart.getDatasetMeta(0).data.forEach((bar, index) => {
+                        const value = data.datasets[0].data[index];
+                        let label = value >= 1000 ? (value/1000) + ' Gbps' : value + ' Mbps';
+                        if(value < 1) label = (value*1000) + ' Kbps';
+                        ctx.fillText(label, bar.x, bar.y - 8);
+                    });
+                    ctx.restore();
+                }
+            }]
+        });
+
+        const milestones = [
+            { year: "1961", title: "Idea de ARPANET", text: "Leonard Kleinrock propone la conmutación de paquetes en 'Information Flow in Large Communication Nets'.", img: "imagenes/arpanet.jpg" },
+            { year: "1969", title: "Nacimiento de Internet", text: "Primera transmisión oficial de datos entre UCLA y el SRI de Stanford.", img: "imagenes/historia-de-internet.jpg" },
+            { year: "1973", title: "SATNET", text: "ARPA implementa la primera conexión de red internacional vía satélite.", img: "imagenes/satelite.jpg" },
+            { year: "1978", title: "Invención TCP/IP", text: "Bob Kahn diseña el protocolo que se convertiría en el estándar global.", img: "imagenes/tcp-ip.avif" },
+            { year: "1981", title: "Protocolo IPv4", text: "Se define oficialmente la primera versión mayor del protocolo IP.", img: "imagenes/IPv4.png" },
+            { year: "1981", title: "Red BITNET", text: "Red creada para sistemas IBM en Estados Unidos, precursora del e-mail académico.", img: "imagenes/red-binet.jpg" },
+            { year: "1983", title: "Estandarización", text: "ARPANET adopta TCP/IP de forma definitiva el 1 de enero.", img: "imagenes/redes.avif" },
+            { year: "1984", title: "Fundación CISCO", text: "Nace la empresa que lideraría la infraestructura de redes mundial.", img: "imagenes/cisco.jpg" },
+            { year: "1988", title: "WaveLAN (Wi-Fi)", text: "AT&T y Lucent introducen el precursor tecnológico del Wi-Fi.", img: "imagenes/wifi.webp" },
+            { year: "1988", title: "Seguridad: Cortafuegos", text: "Primer artículo sobre tecnología de filtrado de paquetes para seguridad.", img: "imagenes/firewall.jpg" },
+            { year: "1990", title: "Primer Switch", text: "Kalpana introduce el primer conmutador de red de la industria.", img: "imagenes/switch.jpg" },
+            { year: "1996", title: "Lanzamiento IPv6", text: "Mejora de direcciones y cifrado para el futuro de la red.", img: "imagenes/IPv6.webp" },
+            { year: "1999", title: "Wi-Fi 802.11a", text: "Estandarización oficial para bandas de 5 GHz y 25 Mbps.", img: "imagenes/Wifi11a.jpg" },
+            { year: "2003", title: "Protocolo WPA2", text: "Nuevo estándar de seguridad robusto para redes inalámbricas.", img: "imagenes/wpa2.png" },
+            { year: "2008", title: "Cloud Computing", text: "Popularización del almacenamiento y software como servicio (SaaS).", img: "imagenes/cloud-computing.webp" },
+            { year: "2009", title: "Wi-Fi 802.11n", text: "Altas velocidades y cobertura mejorada en múltiples bandas.", img: "imagenes/802.11n.webp" },
+            { year: "2010", title: "IoT (Cosas)", text: "El concepto de Internet de las Cosas redefine la conectividad masiva.", img: "imagenes/IoT.webp" },
+            { year: "2016", title: "Blockchain", text: "Adopción de registros distribuidos por grandes tecnológicas.", img: "imagenes/blockchain.jpg" },
+            { year: "2018", title: "Cifrado WPA3", text: "Evolución de seguridad Wi-Fi ante ataques de fuerza bruta.", img: "imagenes/wpa3.jpeg" },
+            { year: "2019", title: "Era del 5G", text: "Velocidad extrema y baja latencia para servicios autónomos.", img: "imagenes/5g.jpg" },
+            { year: "2020", title: "Redes SDN", text: "Virtualización masiva con data centers definidos por software.", img: "imagenes/sdn.webp" },
+            { year: "2022", title: "Tecnología NFV", text: "Virtualización de hardware para escalar demanda de red.", img: "imagenes/nfv.webp" },
+            { year: "2023", title: "IA en Buscadores", text: "Integración masiva de IA (ChatGPT) en la infraestructura móvil.", img: "imagenes/buscadores-IA.jpeg" },
+            { year: "2024", title: "Zero Trust", text: "Modelos de seguridad de confianza cero para redes gubernamentales.", img: "imagenes/zero-trust.jpeg" }
+        ];
+
+        const timeline = document.getElementById('timeline');
+
+        milestones.forEach((item, index) => {
+            const isLeft = index % 2 === 0;
+            const container = document.createElement('div');
+            container.className = `milestone-item flex flex-col md:flex-row items-center w-full`;
+            
+            container.innerHTML = `
+                <div class="w-full md:w-1/2 flex justify-center md:justify-end ${isLeft ? 'order-2 md:order-1' : 'order-3 md:order-1 md:invisible'}">
+                    <div class="milestone-card w-full max-w-sm ml-12 md:ml-0 md:mr-12">
+                        <img src="${item.img}" alt="${item.title}" class="milestone-img" onerror="this.src='https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600'">
+                        <div class="p-5">
+                            <span class="text-xs font-bold text-secondary uppercase tracking-widest">${item.year}</span>
+                            <h4 class="text-xl font-black text-primary mt-1">${item.title}</h4>
+                            <p class="text-sm text-gray-600 mt-2 leading-relaxed">${item.text}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dot shadow-lg order-1 md:order-2"></div>
+                <div class="w-full md:w-1/2 flex justify-center md:justify-start ${!isLeft ? 'order-2 md:order-3' : 'order-3 md:order-3 md:invisible'}">
+                    <div class="milestone-card w-full max-w-sm ml-12 md:ml-12 md:mr-0">
+                        <img src="${item.img}" alt="${item.title}" class="milestone-img" onerror="this.src='https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600'">
+                        <div class="p-5">
+                            <span class="text-xs font-bold text-secondary uppercase tracking-widest">${item.year}</span>
+                            <h4 class="text-xl font-black text-primary mt-1">${item.title}</h4>
+                            <p class="text-sm text-gray-600 mt-2 leading-relaxed">${item.text}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            timeline.appendChild(container);
+        });
+    </script>
+</body>
+</html>

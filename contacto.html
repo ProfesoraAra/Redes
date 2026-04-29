@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto Docente - UNRC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            /* Pantone 7545 C - Color Primario */
+            --pantone-7545: #425563;
+            --pantone-7545-light: #5a7386;
+            /* Pantone 465 C - Color Secundario */
+            --pantone-465: #B9975B;
+            
+            /* Alias para compatibilidad */
+            --primary: var(--pantone-7545);
+            --secondary: var(--pantone-465);
+        }
+        .bg-primary { background-color: var(--pantone-7545); }
+        .text-primary { color: var(--pantone-7545); }
+        .bg-secondary { background-color: var(--pantone-465); }
+        .text-secondary { color: var(--pantone-465); }
+        .border-secondary { border-color: var(--pantone-465); }
+        .bg-secondary-light { background-color: rgba(185, 151, 91, 0.1); }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        .header-fixed {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 4px solid var(--pantone-465);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Efecto de menú personalizado */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--pantone-465);
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover {
+            color: var(--pantone-465);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--pantone-7545) 0%, #2d3a44 100%);
+        }
+
+        .card {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .contact-item:hover {
+            background-color: #f1f5f9;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Navegación -->
+    <header class="header-fixed">
+        <div class="container mx-auto px-4 h-20 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="imagenes/unrc.png" 
+                     alt="Logo UNRC" class="h-16 w-auto object-contain">
+            </div>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="nav-item text-primary font-bold text-sm uppercase tracking-wide">
+                    Inicio
+                </a>
+                <a href="https://unrc.secihti.mx/plataforma/" target="_blank" class="nav-item text-primary font-bold text-sm uppercase tracking-wide flex items-center">
+                    Plataforma UNRC <i data-lucide="external-link" class="ml-2 w-4 h-4 text-secondary"></i>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sección de Perfil -->
+    <section class="hero-gradient text-white py-12 md:py-16 relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-64 h-64 bg-secondary/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+                <div class="w-32 h-32 md:w-36 md:h-36 bg-white rounded-3xl p-1 shadow-2xl flex-shrink-0">
+                    <div class="w-full h-full bg-secondary-light rounded-2xl flex items-center justify-center">
+                        <i data-lucide="user" class="w-16 h-16 text-primary"></i>
+                    </div>
+                </div>
+                <div class="text-center md:text-left">
+                    <h2 class="text-2xl md:text-4xl font-bold mb-2 text-pretty">Lic. Araceli Moreno del Castillo</h2>
+                    <p class="text-md md:text-lg text-secondary font-medium italic">Docente en Línea | Tecnologías de la Información y Comunicación</p>
+                    <div class="mt-4 flex flex-wrap justify-center md:justify-start gap-2">
+                        <span class="px-3 py-1 bg-white/10 rounded-full text-xs font-semibold backdrop-blur-sm border border-white/10">Diseño Gráfico</span>
+                        <span class="px-3 py-1 bg-white/10 rounded-full text-xs font-semibold backdrop-blur-sm border border-white/10">Desarrollo Web</span>
+                        <span class="px-3 py-1 bg-white/10 rounded-full text-xs font-semibold backdrop-blur-sm border border-white/10">Ingeniería en computación</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <!-- Contenido Principal -->
+    <main class="container mx-auto px-4 py-12 flex-1 max-w-4xl space-y-8">
+        
+        <!-- 1. Semblanza -->
+        <div class="card p-8 border-t-4 border-secondary">
+            <h3 class="text-2xl font-bold text-primary mb-6 flex items-center">
+                <i data-lucide="quote" class="mr-3 text-secondary"></i> Semblanza
+            </h3>
+            <div class="text-gray-600 leading-relaxed space-y-4 text-justify text-pretty">
+                <p>
+                    Docente en línea en la <strong>Universidad Rosario Castellanos (UNRC)</strong>, diseñadora gráfica y desarrolladora, comprometida con la formación de nuevas generaciones de profesionistas en Tecnologías de la Información y la Comunicación. 
+                </p>
+                <p class="italic border-l-4 border-secondary pl-6 bg-gray-50 py-4 rounded-r-xl text-sm">
+                    Mi objetivo es compartir conocimientos y experiencias que fortalezcan las habilidades técnicas, el pensamiento lógico y la creatividad de los estudiantes, contribuyendo a su desarrollo profesional en el ámbito tecnológico.
+                </p>
+            </div>
+        </div>
+
+        <!-- 2. Canales de Contacto -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="card p-6 contact-item border-l-4 border-secondary">
+                <div class="flex items-center mb-4">
+                    <div class="p-3 bg-secondary-light rounded-xl mr-4">
+                        <i data-lucide="mail" class="text-secondary w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-primary">Correo Electrónico</h4>
+                </div>
+                <p class="text-xs text-gray-500 mb-2 font-medium">moreno.araceli995@rcastellanos.cdmx.gob.mx</p>
+                <button onclick="copyEmail()" class="text-xs font-bold text-secondary hover:underline flex items-center mb-4">
+                    <i data-lucide="copy" class="w-3 h-3 mr-1"></i> Copiar dirección
+                </button>
+                <div class="flex items-center text-xs font-bold text-green-600 border-t border-gray-100 pt-3">
+                    <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span> Contacto preferente
+                </div>
+            </div>
+
+            <div class="card p-6 contact-item border-l-4 border-secondary">
+                <div class="flex items-center mb-4">
+                    <div class="p-3 bg-secondary-light rounded-xl mr-4">
+                        <i data-lucide="message-square" class="text-secondary w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-primary">Mensajero de Plataforma</h4>
+                </div>
+                <p class="text-sm text-gray-500">Canal institucional para dudas sobre actividades y contenidos del curso.</p>
+            </div>
+        </div>
+
+        <!-- 3. Horarios -->
+        <div class="bg-primary p-8 rounded-[2rem] text-white shadow-xl relative overflow-hidden group">
+            <i data-lucide="clock" class="absolute -bottom-4 -right-4 w-32 h-32 text-white/5 group-hover:scale-110 transition-transform"></i>
+            <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="md:max-w-md">
+                    <h3 class="text-xl font-bold mb-3 flex items-center">
+                        <i data-lucide="calendar-clock" class="mr-2 text-secondary"></i> Horarios de Atención
+                    </h3>
+                    <p class="text-sm text-white/70 font-light leading-relaxed mb-2">📍 Atención sincrónica a través del mensajero de la plataforma.</p>
+                    <p class="text-xs italic text-white/50">Durante este horario podré responderles de manera más ágil y directa.</p>
+                </div>
+                
+                <div class="bg-white/10 p-6 rounded-2xl border border-white/10 backdrop-blur-sm min-w-[240px] text-center">
+                    <div class="text-xs font-semibold text-secondary uppercase tracking-widest mb-1">Lunes a Viernes</div>
+                    <div class="text-4xl font-bold tracking-tight">15:00 - 21:00</div>
+                    <p class="text-[10px] text-white/40 mt-2 uppercase tracking-widest">Hora CDMX</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Notas Importantes -->
+        <div class="bg-amber-50 p-8 rounded-3xl border border-amber-200 shadow-sm">
+            <h4 class="text-amber-800 font-bold mb-4 flex items-center text-lg">
+                <i data-lucide="alert-triangle" class="mr-2 w-6 h-6"></i> Notas importantes
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-amber-900 leading-relaxed">
+                <div class="space-y-3">
+                    <p>Les invito a revisar regularmente su correo electrónico, incluida la carpeta de <strong>SPAM</strong>, ya que por este medio compartiré información relevante.</p>
+                </div>
+                <div class="space-y-3">
+                    <p>Es su responsabilidad asegurar que su cuenta esté activa y con espacio disponible.</p>
+                    <p class="font-bold text-amber-700 border-t border-amber-200 pt-2">¿Necesitas actualizar tu dirección? Escríbeme para asesorarte.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Pie de Página -->
+    <footer class="bg-primary py-12 text-white border-t-4 border-secondary mt-auto">
+        <div class="container mx-auto px-4 text-center space-y-2">
+            <p class="text-lg font-bold uppercase tracking-widest text-white">Universidad Nacional Rosario Castellanos</p>
+            <p class="text-sm font-light opacity-80">Material creado para la licenciatura a distancia LTIC.</p>
+            <p class="text-sm font-bold tracking-[0.3em] text-secondary">UCA: REDES</p>
+        </div>
+    </footer>
+
+    <script>
+        // Inicializar Iconos
+        lucide.createIcons();
+
+        // Función para copiar email
+        function copyEmail() {
+            const email = "moreno.araceli995@rcastellanos.cdmx.gob.mx";
+            const el = document.createElement('textarea');
+            el.value = email;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            const btn = event.currentTarget;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="check" class="w-3 h-3 mr-1 text-green-500"></i> ¡Copiado!';
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                lucide.createIcons();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redes - Universidad Nacional Rosario Castellanos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            /* Pantone 7545 C - Color Primario */
+            --pantone-7545: #425563;
+            --pantone-7545-light: #5a7386;
+            /* Pantone 465 C - Color Secundario */
+            --pantone-465: #B9975B;
+        }
+        .bg-primary { background-color: var(--pantone-7545); }
+        .text-primary { color: var(--pantone-7545); }
+        .border-secondary { border-color: var(--pantone-465); }
+        .text-secondary { color: var(--pantone-465); }
+        .bg-secondary-light { background-color: rgba(185, 151, 91, 0.1); }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .module-row {
+            transition: all 0.3s ease;
+        }
+        .module-row:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Efecto de menú personalizado con animación de subrayado y escala */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--pantone-465);
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover {
+            color: var(--pantone-465);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .nav-item:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header Fijo / Estático -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b-4 border-secondary shadow-sm">
+        <div class="container mx-auto px-4 h-24 flex items-center justify-between">
+            <!-- Logo UNRC-->
+            <div class="flex items-center">
+                <img src="imagenes/unrc.png" 
+                     alt="Logo UNRC" class="h-16 w-auto object-contain">
+            </div>
+            
+            <!-- Menú unificado con efectos -->
+            <nav class="hidden md:flex items-center space-x-12">
+                <a href="https://unrc.secihti.mx/plataforma/" target="_blank" class="nav-item text-primary font-bold text-sm uppercase tracking-wide flex items-center">
+                    Plataforma UNRC <i data-lucide="external-link" class="ml-2 w-4 h-4 text-secondary"></i>
+                </a>
+                <a href="contacto.html" class="nav-item text-primary font-bold text-sm uppercase tracking-wide flex items-center">
+                    Contacto de la Docente
+                </a>
+            </nav>
+        </div>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="bg-primary text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white"></path>
+            </svg>
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <p class="text-xl opacity-90 max-w-2xl mx-auto font-light italic">Unidad Curricular de Aprendizaje (UCA)</p>
+            <h2 class="text-5xl md:text-7xl font-black mb-4 tracking-tighter">Redes</h2>
+        </div>
+    </section>
+
+    <!-- Información General de la UCA -->
+    <section class="bg-white py-12">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Propósito -->
+                <div class="bg-secondary-light p-8 rounded-2xl border-t-4 border-secondary shadow-sm">
+                    <h2 class="text-xl font-bold text-primary mb-4 flex items-center">
+                        <i data-lucide="target" class="w-5 h-5 mr-2 text-secondary"></i> Propósito de la UCA
+                    </h2>
+                    <p class="text-gray-700 text-sm leading-relaxed text-justify">
+                        Distinguir los conceptos generales y clasificación de una red de cómputo observando su funcionamiento, medios de transmisión, topologías, protocolos, modelos OSI y TCP/IP aplicados al diseño de una red por medio de la configuración de un dispositivo switch vinculado a la solución del problema prototípico.
+                    </p>
+                </div>
+                <!-- Competencias -->
+                <div class="bg-gray-50 p-8 rounded-2xl border-t-4 border-primary shadow-sm">
+                    <h2 class="text-xl font-bold text-primary mb-4 flex items-center">
+                        <i data-lucide="award" class="w-5 h-5 mr-2 text-secondary"></i> Competencias de la UCA
+                    </h2>
+                    <p class="text-gray-700 text-sm leading-relaxed text-justify">
+                        Identifica los principios fundamentales, conceptos y tecnologías de las redes de computadoras, así como los medios de transmisión, topologías, protocolos, modelos OSI y TCP/IP para el diseño, implementación y administración de redes en entornos empresariales adaptados al avance de las diferentes tecnologías y enfoques de aplicación vigente con ética y responsabilidad social.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenido Principal (Módulos) -->
+    <main class="container mx-auto px-4 py-12 flex-1">
+        <div class="space-y-12 max-w-5xl mx-auto">
+            
+            <!-- Módulo 1 -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 module-row flex flex-col md:flex-row">
+                <div class="md:w-1/3 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=800" alt="Introducción a las redes" class="w-full h-full object-cover">
+                    <div class="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Módulo 1</div>
+                </div>
+                <div class="md:w-2/3 p-8 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-primary mb-4">Introducción a las redes</h3>
+                    <p class="text-gray-600 mb-6 italic border-l-4 border-secondary pl-4 text-sm leading-relaxed text-justify text-pretty">
+                        <strong>Propósito:</strong> Identificar los conceptos generales y la clasificación de las redes a fin de distinguir el funcionamiento de sus componentes, los medios de transmisión y sus topologías.
+                    </p>
+                    <div class="flex flex-wrap gap-4 mt-2">
+                        <a href="historia-redes.html" class="flex items-center px-4 py-2 rounded-lg bg-gray-50 text-primary hover:bg-gray-100 border border-gray-200 transition text-sm font-semibold">
+                            <i data-lucide="file-text" class="w-4 h-4 mr-2 text-secondary"></i> Material 1
+                        </a>
+                        <a href="redes.html" class="flex items-center px-4 py-2 rounded-lg bg-gray-50 text-primary hover:bg-gray-100 border border-gray-200 transition text-sm font-semibold">
+                            <i data-lucide="file-text" class="w-4 h-4 mr-2 text-secondary"></i> Material 2
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulo 2 -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 module-row flex flex-col md:flex-row">
+                <div class="md:w-1/3 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800" alt="Modelos de comunicación" class="w-full h-full object-cover">
+                    <div class="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Módulo 2</div>
+                </div>
+                <div class="md:w-2/3 p-8 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-primary mb-4">Modelos de comunicación</h3>
+                    <p class="text-gray-600 mb-6 italic border-l-4 border-secondary pl-4 text-sm leading-relaxed text-justify">
+                        <strong>Propósito:</strong> Estudiar las arquitecturas de red, capas del modelo OSI y la pila TCP/IP para comprender la estandarización de las comunicaciones a nivel global.
+                    </p>
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg shadow-inner">
+                        <p class="text-xs text-blue-800 font-medium flex items-center">
+                            <i data-lucide="clock" class="w-4 h-4 mr-2"></i> Próximamente se habilitarán los recursos de este módulo del curso.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulo 3 -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 module-row flex flex-col md:flex-row">
+                <div class="md:w-1/3 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=800" alt="Ethernet" class="w-full h-full object-cover">
+                    <div class="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Módulo 3</div>
+                </div>
+                <div class="md:w-2/3 p-8 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-primary mb-4">Ethernet</h3>
+                    <p class="text-gray-600 mb-6 italic border-l-4 border-secondary pl-4 text-sm leading-relaxed text-justify">
+                        <strong>Propósito:</strong> Analizar el funcionamiento de la capa de enlace de datos, protocolos de acceso al medio y conmutación en redes locales para optimizar el tráfico.
+                    </p>
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg shadow-inner">
+                        <p class="text-xs text-blue-800 font-medium flex items-center">
+                            <i data-lucide="clock" class="w-4 h-4 mr-2"></i> Próximamente se habilitarán los recursos de este módulo del curso.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulo 4 -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 module-row flex flex-col md:flex-row">
+                <div class="md:w-1/3 h-64 md:h-auto overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" alt="Diseño de red" class="w-full h-full object-cover">
+                    <div class="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Módulo 4</div>
+                </div>
+                <div class="md:w-2/3 p-8 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-primary mb-4">Diseño e implementación de la red LAN</h3>
+                    <p class="text-gray-600 mb-6 italic border-l-4 border-secondary pl-4 text-sm leading-relaxed text-justify">
+                        <strong>Propósito:</strong> Aplicar los conocimientos adquiridos para diseñar, estructurar y configurar una red de área local funcional, segura y escalable.
+                    </p>
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg shadow-inner">
+                        <p class="text-xs text-blue-800 font-medium flex items-center">
+                            <i data-lucide="clock" class="w-4 h-4 mr-2"></i> Próximamente se habilitarán los recursos de este módulo del curso.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Pie de Página -->
+    <footer class="bg-primary py-12 text-white border-t-4 border-secondary">
+        <div class="container mx-auto px-4 text-center space-y-2">
+            <p class="text-lg font-bold uppercase tracking-widest text-white leading-tight">Universidad Nacional Rosario Castellanos</p>
+            <p class="text-sm font-light opacity-80">Material creado para la licenciatura a distancia LTIC.</p>
+            <p class="text-sm font-bold tracking-[0.3em] text-secondary">UCA: REDES</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
+            } else {
+                modal.style.display = 'flex';
+            }
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('contact-modal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
