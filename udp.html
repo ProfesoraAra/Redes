@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo UDP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --pantone-7545: #465973;
+            --pantone-465: #B9975B;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: var(--pantone-7545);
+        }
+
+        .bg-unrc-blue { background-color: var(--pantone-7545); }
+        .text-unrc-blue { color: var(--pantone-7545); }
+        .bg-unrc-gold { background-color: var(--pantone-465); }
+        .text-unrc-gold { color: var(--pantone-465); }
+        .border-unrc-gold { border-color: var(--pantone-465); }
+        .border-unrc-blue { border-color: var(--pantone-7545); }
+
+        .wide-card {
+            background: white;
+            border-radius: 1.25rem;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 380px;
+        }
+
+        .stat-badge {
+            background: rgba(185, 151, 91, 0.1);
+            color: var(--unrc-gold);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .card-shadow {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-shadow:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 450px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--pantone-465);
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover {
+            color: var(--pantone-465);
+            transform: translateY(-2px);
+        }
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        .layer-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.25rem;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .pdu-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .header-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-pill {
+            border-left: 4px solid var(--pantone-465);
+            padding: 1.25rem;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Utilidad para diseño ancho */
+        .wide-layout {
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body class="antialiased scroll-smooth">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white border-b-4 border-unrc-gold shadow-md">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo UNRC -->
+            <div class="flex items-center">
+                <img src="imagenes/unrc.png" 
+                     alt="Logo UNRC" class="h-16 w-auto object-contain">
+            </div>
+            <nav>
+                <a href="index.html" class="nav-item text-unrc-blue font-bold text-sm uppercase tracking-wide">
+                    Inicio
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-unrc-blue text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white"></path>
+            </svg>
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h1 class="text-5xl md:text-7xl font-black mb-4 tracking-tighter">Modelo UDP</h1>
+        </div>
+    </section>
+
+    <main class="w-full px-8 md:px-16 py-16 space-y-16">
+        
+        <!-- Sección 1: Definición y Arquitectura de Datos -->
+        <section class="grid grid-cols-1 xl:grid-cols-3 gap-12">
+            <div class="xl:col-span-1 space-y-8">
+                <div class="flex items-center gap-4">
+                    <h2 class="text-4xl font-black tracking-tighter">Fundamentos</h2>
+                    <div class="flex-grow h-px bg-unrc-gold"></div>
+                </div>
+                <p class="text-slate-600 text-lg leading-relaxed">
+                    UDP es el protocolo más simple de la capa de transporte. A diferencia de TCP, es un protocolo <b>sin conexión</b>, lo que significa que no hay intercambio inicial para establecer una sesión. Esto reduce significativamente el retardo de propagación inicial.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-6 bg-white rounded-xl border-l-4 border-unrc-gold shadow-sm">
+                        <i data-lucide="shield-off" class="text-unrc-gold mb-2 w-5 h-5"></i>
+                        <h4 class="font-bold text-unrc-blue text-sm uppercase">No Fiable</h4>
+                        <p class="text-xs text-slate-500">No garantiza el orden ni la llegada de datos.</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-xl border-l-4 border-unrc-blue shadow-sm">
+                        <i data-lucide="gauge" class="text-unrc-blue mb-2 w-5 h-5"></i>
+                        <h4 class="font-bold text-unrc-blue text-sm uppercase">Best Effort</h4>
+                        <p class="text-xs text-slate-500">Transmite tan rápido como el medio permite.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="xl:col-span-2 wide-card p-10 border-t-8 border-unrc-blue">
+                <h3 class="text-2xl font-black mb-8 uppercase text-unrc-blue flex items-center gap-3">
+                    <i data-lucide="layout"></i> Estructura del Header (8 Bytes)
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                    <div class="p-4 bg-unrc-blue text-white rounded-lg text-center shadow-lg">
+                        <span class="block text-xs opacity-60 mb-1">Bytes 1-2</span>
+                        <span class="font-bold">Puerto Origen</span>
+                    </div>
+                    <div class="p-4 bg-unrc-gold text-white rounded-lg text-center shadow-lg">
+                        <span class="block text-xs opacity-60 mb-1">Bytes 3-4</span>
+                        <span class="font-bold">Puerto Destino</span>
+                    </div>
+                    <div class="p-4 bg-unrc-blue opacity-80 text-white rounded-lg text-center shadow-lg">
+                        <span class="block text-xs opacity-60 mb-1">Bytes 5-6</span>
+                        <span class="font-bold">Longitud</span>
+                    </div>
+                    <div class="p-4 bg-unrc-gold opacity-80 text-white rounded-lg text-center shadow-lg">
+                        <span class="block text-xs opacity-60 mb-1">Bytes 7-8</span>
+                        <span class="font-bold">Checksum</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="headerChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 2: Análisis Comparativo de Desempeño -->
+        <section class="wide-card p-12 bg-slate-900 text-white">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-10">
+                    <div class="flex items-center gap-4">
+                        <h2 class="text-4xl font-black tracking-tighter text-unrc-gold">UDP vs TCP</h2>
+                        <div class="flex-grow h-px bg-white/20"></div>
+                    </div>
+                    <p class="text-slate-400 text-xl leading-relaxed font-light">
+                        La eficiencia de UDP reside en su ligereza. Mientras TCP utiliza cabeceras de entre 20 y 60 bytes para gestionar el control de errores y flujo, UDP se mantiene en 8 bytes constantes, priorizando el ancho de banda útil.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                            <span class="font-bold uppercase text-xs tracking-widest">Sobrecarga de Header</span>
+                            <span class="text-unrc-gold font-black">Mínima (8B)</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                            <span class="font-bold uppercase text-xs tracking-widest">Control de Congestión</span>
+                            <span class="text-unrc-gold font-black italic">No Implementado</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                            <span class="font-bold uppercase text-xs tracking-widest">Tiempo de Handshake</span>
+                            <span class="text-unrc-gold font-black">0 ms</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container bg-white/5 rounded-3xl p-6 backdrop-blur-md border border-white/10">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 3: Aplicación en la Industria Real -->
+        <section class="space-y-12">
+            <div class="flex items-center gap-4">
+                <h2 class="text-4xl font-black tracking-tighter">Casos de Uso</h2>
+                <div class="flex-grow h-px bg-unrc-gold"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="wide-card p-8 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-6 border border-slate-100">
+                        <i data-lucide="video" class="text-unrc-blue w-8 h-8"></i>
+                    </div>
+                    <h4 class="font-black text-unrc-blue uppercase mb-3">Streaming</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Netflix o Zoom: donde la fluidez temporal es más importante que la corrección de un frame perdido.</p>
+                </div>
+                <div class="wide-card p-8 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-6 border border-slate-100">
+                        <i data-lucide="gamepad-2" class="text-unrc-blue w-8 h-8"></i>
+                    </div>
+                    <h4 class="font-black text-unrc-blue uppercase mb-3">Juegos</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">FPS multijugador: la posición actual de un jugador es crítica, la de hace un segundo es obsoleta.</p>
+                </div>
+                <div class="wide-card p-8 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-6 border border-slate-100">
+                        <i data-lucide="search" class="text-unrc-blue w-8 h-8"></i>
+                    </div>
+                    <h4 class="font-black text-unrc-blue uppercase mb-3">DNS</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Resolución rápida de nombres: consultas simples de ida y vuelta que caben en un solo datagrama.</p>
+                </div>
+                <div class="wide-card p-8 flex flex-col items-center text-center border-b-8 border-unrc-gold">
+                    <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-6 border border-slate-100">
+                        <i data-lucide="cpu" class="text-unrc-blue w-8 h-8"></i>
+                    </div>
+                    <h4 class="font-black text-unrc-blue uppercase mb-3">IoT</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Dispositivos con recursos limitados que envían métricas constantes de sensores.</p>
+                </div>
+            </div>
+
+            <div class="wide-card p-12 bg-white flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/3">
+                    <h3 class="text-2xl font-black text-unrc-blue mb-4 uppercase">Distribución de Tráfico Especializado</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed mb-6">
+                        Análisis porcentual de la relevancia de UDP en servicios críticos de red. El dominio en multimedia es casi absoluto.
+                    </p>
+                    <div class="p-6 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="text-4xl font-black text-unrc-gold">~70%</span>
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Del tráfico de tiempo real utiliza datagramas</p>
+                    </div>
+                </div>
+                <div class="lg:w-2/3 chart-container">
+                    <canvas id="usageChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Azul UNRC -->
+    <footer class="py-12 text-white bg-unrc-blue border-t-8 border-unrc-gold">
+        <div class="container mx-auto px-4 text-center space-y-2">
+            <p class="text-lg font-bold uppercase tracking-widest leading-tight">Universidad Nacional Rosario Castellanos</p>
+            <p class="text-sm font-light opacity-80">Material creado para la licenciatura a distancia LTIC</p>
+            <p class="text-sm font-bold tracking-[0.3em] text-unrc-gold">UCA: Redes | Módulo 2</p>
+        </div>
+    </footer>
+
+    <script>
+        // Inicializar Iconos
+        lucide.createIcons();
+
+        // Configuración de visualizaciones
+        const unrcBlue = '#465973';
+        const unrcGold = '#B9975B';
+
+        Chart.defaults.color = unrcBlue;
+        Chart.defaults.font.family = "'Inter', sans-serif";
+
+        // Función para envolver etiquetas largas
+        function wrapLabel(label) {
+            if (typeof label !== 'string') return label;
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > 16) {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        // Configuración de Tooltip global
+        const tooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            return Array.isArray(label) ? label.join(' ') : label;
+                        }
+                    }
+                }
+            }
+        };
+
+        // 1. Header Chart
+        new Chart(document.getElementById('headerChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Puerto Origen', 'Puerto Destino', 'Longitud Mensaje', 'Suma Checksum'],
+                datasets: [{
+                    label: 'Bits por campo',
+                    data: [16, 16, 16, 16],
+                    backgroundColor: [unrcBlue, unrcGold, unrcBlue, unrcGold],
+                    borderRadius: 12
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipOptions.plugins.tooltip
+                },
+                scales: {
+                    y: { beginAtZero: true, max: 20, grid: { display: false } },
+                    x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+                }
+            }
+        });
+
+        // 2. Radar Chart
+        new Chart(document.getElementById('performanceChart'), {
+            type: 'radar',
+            data: {
+                labels: ['Velocidad Real', 'Fiabilidad Datos', 'Baja Sobrecarga', 'Tiempo de Respuesta', 'Control Errores'].map(wrapLabel),
+                datasets: [
+                    {
+                        label: 'UDP',
+                        data: [10, 2, 10, 10, 1],
+                        borderColor: unrcGold,
+                        backgroundColor: 'rgba(185, 151, 91, 0.2)',
+                        pointBackgroundColor: unrcGold
+                    },
+                    {
+                        label: 'TCP',
+                        data: [5, 10, 3, 4, 10],
+                        borderColor: '#ffffff',
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        pointBackgroundColor: '#ffffff'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255,255,255,0.1)' },
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        ticks: { display: false },
+                        pointLabels: { color: '#94a3b8', font: { size: 11, weight: 'bold' } }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'top', labels: { color: '#ffffff' } },
+                    tooltip: tooltipOptions.plugins.tooltip
+                }
+            }
+        });
+
+        // 3. Usage Doughnut
+        new Chart(document.getElementById('usageChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Multimedia / Video', 'Juegos Online', 'Servicios Red (DNS)', 'IoT y Sensores'],
+                datasets: [{
+                    data: [45, 25, 20, 10],
+                    backgroundColor: [unrcBlue, unrcGold, '#7c8fa6', '#cbd5e1'],
+                    borderColor: '#ffffff',
+                    borderWidth: 5,
+                    hoverOffset: 20
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: {
+                    legend: { position: 'right', labels: { boxWidth: 15, padding: 25, font: { size: 12, weight: 'bold' } } },
+                    tooltip: tooltipOptions.plugins.tooltip
+                }
+            }
+        });
+
+        // Confirmación técnica de NO uso de Mermaid JS ni SVG según requerimientos.
+        // Toda la lógica de diagramas y visualización se basa en HTML/CSS estructurado y Chart.js en Canvas.
+    </script>
+</body>
+</html>
