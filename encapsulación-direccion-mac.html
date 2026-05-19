@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encapsulación y Dirección MAC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --pantone-7545: #425563;
+            --pantone-465: #B9975B;
+            --footer-blue: #465973;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: var(--pantone-7545);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            margin: auto;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--pantone-465) 0%, var(--pantone-7545) 100%);
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-line { left: 30px; transform: none; }
+        }
+
+        .milestone-item {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 4rem;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .milestone-card {
+            overflow: hidden;
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .milestone-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
+        }
+
+        .dot {
+            width: 24px;
+            height: 24px;
+            background-color: var(--pantone-465);
+            border: 4px solid white;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(185, 151, 91, 0.6);
+            top: 2rem;
+            z-index: 20;
+        }
+
+        @media (max-width: 768px) {
+            .dot { left: 30px; transform: translateX(-50%); }
+        }
+
+        .bg-primary { background-color: var(--pantone-7545); }
+        .text-primary { color: var(--pantone-7545); }
+        .text-secondary { color: var(--pantone-465); }
+        .border-secondary { border-color: var(--pantone-465); }
+        
+        .milestone-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background-color: #e2e8f0;
+        }
+
+        /* Efecto de menú personalizado */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--pantone-465);
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover {
+            color: var(--pantone-465);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .nav-item:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header Blanco -->
+    <header class="sticky top-0 z-50 bg-white border-b-4 border-secondary shadow-md">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo UNRC -->
+            <div class="flex items-center">
+                <img src="imagenes/unrc.png" 
+                     alt="Logo UNRC" class="h-16 w-auto object-contain">
+            </div>
+            <nav>
+                <a href="index.html" class="nav-item text-primary font-bold text-sm uppercase tracking-wide">
+                    Inicio
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-primary text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white"></path>
+            </svg>
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h2 class="text-5xl md:text-7xl font-black mb-4 tracking-tighter">Encapsulación y Dirección MAC</h2>
+        </div>
+    </section>
+
+    <section class="py-16 container mx-auto px-6 max-w-6xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-secondary">
+                <h3 class="text-2xl font-bold mb-4 flex items-center">
+                    <i data-lucide="target" class="mr-2 text-secondary"></i> El origen de la trama
+                </h3>
+                <p class="text-gray-600 leading-relaxed text-justify mb-4">
+                    La encapsulación en la Capa 2 (Enlace de Datos) empaqueta los datos de red de las capas superiores en una estructura física transportable llamada <strong>Trama Ethernet</strong>. Este proceso añade encabezados y trailers esenciales para regular el acceso físico al medio y asegurar que los datos viajen sin errores entre dispositivos utilizando identificadores de hardware permanentes.
+                </p>
+                <div class="flex space-x-4">
+                    <div class="flex flex-col items-center p-3 bg-gray-50 rounded-xl flex-1">
+                        <span class="text-2xl font-bold text-secondary">48</span>
+                        <span class="text-xs uppercase font-semibold opacity-60">Bits de la MAC</span>
+                    </div>
+                    <div class="flex flex-col items-center p-3 bg-gray-50 rounded-xl flex-1">
+                        <span class="text-2xl font-bold text-secondary">1518</span>
+                        <span class="text-xs uppercase font-semibold opacity-60">Bytes Máx. Trama</span>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <h3 class="text-3xl font-black tracking-tight">Datos de valor</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start p-4 bg-white rounded-2xl shadow-sm border-l-4 border-primary">
+                        <i data-lucide="zap" class="w-6 h-6 mr-4 text-secondary"></i>
+                        <p class="text-sm"><strong>OUI (Identificador de Organización):</strong> Los primeros 24 bits de una dirección MAC son asignados de forma exclusiva por el IEEE a cada fabricante para prevenir colisiones lógicas mundiales.</p>
+                    </div>
+                    <div class="flex items-start p-4 bg-white rounded-2xl shadow-sm border-l-4 border-primary">
+                        <i data-lucide="database" class="w-6 h-6 mr-4 text-secondary"></i>
+                        <p class="text-sm"><strong>Verificación FCS:</strong> El campo de secuencia de verificación de trama utiliza CRC para detectar si un solo bit se corrompió durante la transmisión electromagnética o de fibra óptica.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-gray-200/50 py-16 border-y border-gray-300">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <h3 class="text-3xl font-black text-center mb-12">Rendimiento y Escala de Ethernet</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-white p-8 rounded-3xl shadow-lg">
+                    <h4 class="font-bold mb-6 text-center text-primary">Eficiencia de Transmisión de Trama Ethernet (%)</h4>
+                    <div class="chart-container">
+                        <canvas id="usersChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-lg">
+                    <h4 class="font-bold mb-6 text-center text-primary">Evolución del Ancho de Banda en Ethernet (Log)</h4>
+                    <div class="chart-container">
+                        <canvas id="speedChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <h3 class="text-3xl font-black text-center mb-12">Subcapas de la Capa de Enlace de Datos</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-50 p-8 rounded-3xl shadow-md border-t-4 border-secondary">
+                    <div class="flex items-center mb-4">
+                        <i data-lucide="file-text" class="w-8 h-8 mr-3 text-secondary"></i>
+                        <h4 class="text-xl font-bold text-primary">Subcapa LLC (Control de Enlace Lógico)</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed text-justify">
+                        Definida bajo el estándar IEEE 802.2, la subcapa LLC actúa como interfaz intermedia entre el software de red de la capa superior (Capa 3, como IP) y el hardware de las capas inferiores. Su propósito primordial es identificar de forma uniforme el protocolo que transporta la trama, permitiendo que múltiples protocolos de red coexistan sobre la misma interfaz física.
+                    </p>
+                </div>
+                <div class="bg-gray-50 p-8 rounded-3xl shadow-md border-t-4 border-primary">
+                    <div class="flex items-center mb-4">
+                        <i data-lucide="cpu" class="w-8 h-8 mr-3 text-primary"></i>
+                        <h4 class="text-xl font-bold text-primary">Subcapa MAC (Control de Acceso al Medio)</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed text-justify">
+                        Definida bajo el estándar IEEE 802.3, la subcapa MAC se encarga de la encapsulación de los datos y de la interfaz física con el medio. Gestiona la estructura de la trama, el direccionamiento de hardware (MAC origen y destino) y la detección de errores de transmisión mediante el FCS, además de dictar las reglas de acceso al canal físico.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-800 text-white">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <h3 class="text-3xl font-black mb-12 text-center text-secondary">Procesamiento de Hardware en Capa de Enlace</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-8 bg-gray-700 rounded-3xl border-b-8 border-secondary transition-transform hover:scale-105">
+                    <i data-lucide="layers" class="w-10 h-10 mb-4 text-secondary"></i>
+                    <h4 class="text-xl font-bold mb-2">NIC (Tarjeta de Red)</h4>
+                    <p class="text-sm opacity-80">Componente donde reside físicamente la dirección MAC "quemada" de fábrica en su memoria ROM/EEPROM (Burned-In Address).</p>
+                </div>
+                <div class="p-8 bg-gray-700 rounded-3xl border-b-8 border-primary transition-transform hover:scale-105">
+                    <i data-lucide="shuffle" class="w-10 h-10 mb-4 text-secondary"></i>
+                    <h4 class="text-xl font-bold mb-2">Switch de Capa 2</h4>
+                    <p class="text-sm opacity-80">Dispositivo inteligente que examina las direcciones MAC de origen y destino para construir su tabla de reenvío CAM.</p>
+                </div>
+                <div class="p-8 bg-gray-700 rounded-3xl border-b-8 border-secondary transition-transform hover:scale-105">
+                    <i data-lucide="navigation" class="w-10 h-10 mb-4 text-secondary"></i>
+                    <h4 class="text-xl font-bold mb-2">Puerta de Enlace (Router)</h4>
+                    <p class="text-sm opacity-80">Desencapsula la trama Ethernet en cada salto físico para analizar la dirección IP lógica y decidir la siguiente ruta de red.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Azul UNRC -->
+    <footer class="py-12 text-white border-t-8 border-secondary" style="background-color: var(--footer-blue);">
+        <div class="container mx-auto px-4 text-center space-y-2">
+            <p class="text-lg font-bold uppercase tracking-widest text-white leading-tight">Universidad Nacional Rosario Castellanos</p>
+            <p class="text-sm font-light opacity-80">Material creado para la licenciatura a distancia LTIC</p>
+            <p class="text-sm font-bold tracking-[0.3em] text-secondary">UCA: Redes | Módulo 3</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { labels: { color: '#425563', font: { weight: 'bold' } } },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            } else {
+                                return label;
+                            }
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: { grid: { color: '#e5e7eb' }, ticks: { color: '#425563' } },
+                x: { grid: { display: false }, ticks: { color: '#425563' } }
+            }
+        };
+
+        new Chart(document.getElementById('usersChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['46 Bytes', '128 Bytes', '256 Bytes', '512 Bytes', '1024 Bytes', '1500 Bytes'],
+                datasets: [{
+                    label: 'Eficiencia de la Trama (%)',
+                    data: [71.8, 87.6, 93.4, 96.6, 98.2, 98.8],
+                    borderColor: '#B9975B',
+                    backgroundColor: 'rgba(185, 151, 91, 0.2)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 4,
+                    pointBackgroundColor: '#425563'
+                }]
+            },
+            options: commonOptions
+        });
+
+        const speedCtx = document.getElementById('speedChart').getContext('2d');
+        const speedChart = new Chart(speedCtx, {
+            type: 'bar',
+            data: {
+                labels: ['1980 (Original)', '1995 (Fast)', '1998 (Gigabit)', '2010 (100G)'],
+                datasets: [{
+                    label: 'Velocidad Física de Estándar',
+                    data: [10, 100, 1000, 100000],
+                    backgroundColor: '#425563',
+                    borderRadius: 8,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                ...commonOptions,
+                plugins: {
+                    ...commonOptions.plugins,
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#425563', font: { weight: 'bold' } } },
+                    y: { 
+                        type: 'logarithmic',
+                        min: 1,
+                        suggestedMax: 200000,
+                        ticks: {
+                            color: '#425563',
+                            callback: function(value) {
+                                if (value === 10) return "10 Mbps";
+                                if (value === 100) return "100 Mbps";
+                                if (value === 1000) return "1 Gbps";
+                                if (value === 100000) return "100 Gbps";
+                                return null;
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [{
+                id: 'customLabels',
+                afterDatasetsDraw(chart) {
+                    const { ctx, data } = chart;
+                    ctx.save();
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    ctx.font = 'bold 12px Segoe UI';
+                    ctx.fillStyle = '#425563';
+
+                    chart.getDatasetMeta(0).data.forEach((bar, index) => {
+                        const value = data.datasets[0].data[index];
+                        let label = value >= 1000 ? (value/1000) + ' Gbps' : value + ' Mbps';
+                        ctx.fillText(label, bar.x, bar.y - 8);
+                    });
+                    ctx.restore();
+                }
+            }]
+        });
+    </script>
+</body>
+</html>

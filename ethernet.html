@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethernet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --pantone-7545: #425563;
+            --pantone-465: #B9975B;
+            --footer-blue: #465973;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: var(--pantone-7545);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            margin: auto;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--pantone-465) 0%, var(--pantone-7545) 100%);
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-line { left: 30px; transform: none; }
+        }
+
+        .milestone-item {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 4rem;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .milestone-card {
+            overflow: hidden;
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .milestone-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
+        }
+
+        .dot {
+            width: 24px;
+            height: 24px;
+            background-color: var(--pantone-465);
+            border: 4px solid white;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(185, 151, 91, 0.6);
+            top: 2rem;
+            z-index: 20;
+        }
+
+        @media (max-width: 768px) {
+            .dot { left: 30px; transform: translateX(-50%); }
+        }
+
+        .bg-primary { background-color: var(--pantone-7545); }
+        .text-primary { color: var(--pantone-7545); }
+        .text-secondary { color: var(--pantone-465); }
+        .border-secondary { border-color: var(--pantone-465); }
+        
+        .milestone-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background-color: #e2e8f0;
+        }
+
+        /* Efecto de menú personalizado */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--pantone-465);
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover {
+            color: var(--pantone-465);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .nav-item:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header Blanco -->
+    <header class="sticky top-0 z-50 bg-white border-b-4 border-secondary shadow-md">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo UNRC -->
+            <div class="flex items-center">
+                <img src="imagenes/unrc.png" 
+                     alt="Logo UNRC" class="h-16 w-auto object-contain">
+            </div>
+            <nav>
+                <a href="index.html" class="nav-item text-primary font-bold text-sm uppercase tracking-wide">
+                    Inicio
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-primary text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white"></path>
+            </svg>
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h2 class="text-5xl md:text-7xl font-black mb-4 tracking-tighter">Ethernet</h2>
+        </div>
+    </section>
+
+    <!-- Introducción y Propósito adaptado -->
+    <section id="introduccion" class="py-16 container mx-auto px-6 max-w-6xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-secondary">
+                <h3 class="text-2xl font-bold mb-4 flex items-center text-primary">
+                    <i data-lucide="target" class="mr-2 text-secondary"></i> Arquitectura de Capa 2
+                </h3>
+                <p class="text-gray-600 leading-relaxed text-justify mb-4">
+                    Basado en el <strong>Módulo 3 de la UNRC</strong>, analizamos la tecnología de red local más extendida del mundo. El estándar <strong>Ethernet</strong> opera en la capa física y la capa de enlace de datos del modelo OSI, sirviendo de puente directo entre el software de red (TCP/IP) y los medios físicos mediante sus subcapas especializadas <strong>LLC (Logical Link Control)</strong> y <strong>MAC (Media Access Control)</strong>.
+                </p>
+                <div class="flex space-x-4">
+                    <div class="flex flex-col items-center p-3 bg-gray-50 rounded-xl flex-1">
+                        <span class="text-2xl font-bold text-secondary">IEEE 802.3</span>
+                        <span class="text-[10px] uppercase font-semibold opacity-60 text-center">Protocolo Base</span>
+                    </div>
+                    <div class="flex flex-col items-center p-3 bg-gray-50 rounded-xl flex-1">
+                        <span class="text-2xl font-bold text-secondary">48 Bits</span>
+                        <span class="text-[10px] uppercase font-semibold opacity-60 text-center">Longitud de MAC</span>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <h3 class="text-3xl font-black tracking-tight text-primary">Conceptos Clave de Enlace</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start p-4 bg-white rounded-2xl shadow-sm border-l-4 border-primary">
+                        <i data-lucide="zap" class="w-6 h-6 mr-4 text-secondary flex-shrink-0"></i>
+                        <p class="text-sm"><strong>Subcapa LLC (IEEE 802.2):</strong> Aísla los protocolos de red de los cambios de hardware, administrando la comunicación lógica y las tramas independientemente del medio de transmisión.</p>
+                    </div>
+                    <div class="flex items-start p-4 bg-white rounded-2xl shadow-sm border-l-4 border-primary">
+                        <i data-lucide="database" class="w-6 h-6 mr-4 text-secondary flex-shrink-0"></i>
+                        <p class="text-sm"><strong>Subcapa MAC:</strong> Encapsula los paquetes de capa 3 en tramas de capa 2, gestiona el direccionamiento físico unicast/multicast/broadcast, e implementa el control de acceso al medio.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gráficas de Crecimiento adaptadas a Ethernet -->
+    <section id="metricas" class="bg-gray-200/50 py-16 border-y border-gray-300">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <h3 class="text-3xl font-black text-center mb-12 text-primary">Análisis Técnico y Evolución</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-white p-8 rounded-3xl shadow-lg">
+                    <h4 class="font-bold mb-6 text-center text-primary">Velocidad de Transferencia por Estándar (Mbps)</h4>
+                    <div class="chart-container">
+                        <canvas id="usersChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-gray-500 mt-4">La escalabilidad de Ethernet ha permitido su supervivencia frente a Token Ring y FDDI.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-lg">
+                    <h4 class="font-bold mb-6 text-center text-primary">Estructura Fija de la Trama Ethernet II (Bytes)</h4>
+                    <div class="chart-container">
+                        <canvas id="speedChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-gray-500 mt-4">Los datos útiles oscilan entre un rango estricto de 46 y 1500 bytes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Línea de Tiempo Maestras (24 Hitos de Redes, Estándares y Ethernet) -->
+    <section id="cronologia" class="py-20 bg-white">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <h3 class="text-4xl font-black text-center mb-16 text-primary">Cronología e Implementación</h3>
+            
+            <div class="timeline-container" id="timeline">
+                <div class="timeline-line"></div>
+                <!-- Los hitos se inyectan dinámicamente mediante JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Hardware (Módulo 3) -->
+    <section id="hardware" class="py-16 bg-gray-800 text-white">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <h3 class="text-3xl font-black mb-12 text-center text-secondary">Dispositivos y Control de Acceso</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-8 bg-gray-700 rounded-3xl border-b-8 border-secondary transition-transform hover:scale-105">
+                    <i data-lucide="layers" class="w-10 h-10 mb-4 text-secondary"></i>
+                    <h4 class="text-xl font-bold mb-2">CSMA/CD</h4>
+                    <p class="text-sm opacity-80 text-justify">Protocolo de acceso compartido que escucha el medio antes de transmitir. En caso de colisión de voltajes, detiene el envío y aplica un algoritmo de postergación aleatoria (backoff).</p>
+                </div>
+                <div class="p-8 bg-gray-700 rounded-3xl border-b-8 border-primary transition-transform hover:scale-105">
+                    <i data-lucide="shuffle" class="w-10 h-10 mb-4 text-secondary"></i>
+                    <h4 class="text-xl font-bold mb-2">Conmutación (Switches)</h4>
+                    <p class="text-sm opacity-80 text-justify">Los conmutadores de capa 2 dividen los dominios de colisión. Usan tablas de direcciones MAC para reenviar tramas de manera selectiva, eliminando colisiones en redes modernas full-duplex.</p>
+                </div>
+                <div class="p-8 bg-gray-700 rounded-3xl border-b-8 border-secondary transition-transform hover:scale-105">
+                    <i data-lucide="navigation" class="w-10 h-10 mb-4 text-secondary"></i>
+                    <h4 class="text-xl font-bold mb-2">Protocolo ARP</h4>
+                    <p class="text-sm opacity-80 text-justify">Address Resolution Protocol opera entre las capas 2 y 3. Resuelve direcciones lógicas IP convirtiéndolas en direcciones físicas MAC mediante tramas de solicitud por difusión (Broadcast).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Azul UNRC -->
+    <footer class="py-12 text-white border-t-8 border-secondary" style="background-color: var(--footer-blue);">
+        <div class="container mx-auto px-4 text-center space-y-2">
+            <p class="text-lg font-bold uppercase tracking-widest text-white leading-tight">Universidad Nacional Rosario Castellanos</p>
+            <p class="text-sm font-light opacity-80">Material creado para la licenciatura a distancia LTIC</p>
+            <p class="text-sm font-bold tracking-[0.3em] text-secondary">UCA: Redes | Módulo 3</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Configuración común de ChartJS adaptada
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { labels: { color: '#425563', font: { weight: 'bold' } } }
+            },
+            scales: {
+                y: { grid: { color: '#e5e7eb' }, ticks: { color: '#425563' } },
+                x: { grid: { display: false }, ticks: { color: '#425563' } }
+            }
+        };
+
+        // Gráfico de evolución de velocidad de estándares (Capa física)
+        new Chart(document.getElementById('usersChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['DIX 1980', '802.3 1983', '802.3u 1995', '802.3z 1998', '802.3ae 2002', '802.3ba 2010', '802.3bs 2017'],
+                datasets: [{
+                    label: 'Velocidad de Transferencia (Mbps)',
+                    data: [10, 10, 100, 1000, 10000, 40000, 400000],
+                    borderColor: '#B9975B',
+                    backgroundColor: 'rgba(185, 151, 91, 0.15)',
+                    fill: true,
+                    tension: 0.3,
+                    borderWidth: 4,
+                    pointBackgroundColor: '#425563'
+                }]
+            },
+            options: {
+                ...commonOptions,
+                plugins: {
+                    ...commonOptions.plugins,
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                return tooltipItems[0].label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#425563', font: { size: 10 } } },
+                    y: {
+                        type: 'logarithmic',
+                        ticks: {
+                            color: '#425563',
+                            callback: function(value) {
+                                if (value >= 1000) return (value / 1000) + ' Gbps';
+                                return value + ' Mbps';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Bytes de la Trama Ethernet II
+        new Chart(document.getElementById('speedChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Preámbulo (8B)', 'MAC Dest (6B)', 'MAC Org (6B)', 'EtherType (2B)', 'FCS / CRC (4B)'],
+                datasets: [{
+                    label: 'Ancho del Campo (Bytes)',
+                    data: [8, 6, 6, 2, 4],
+                    backgroundColor: '#425563',
+                    borderColor: '#B9975B',
+                    borderWidth: 2,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                ...commonOptions,
+                plugins: {
+                    ...commonOptions.plugins,
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                return tooltipItems[0].label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 24 Hitos de la historia, evolución y estándares de red cubiertos en el Módulo
+        const milestones = [
+            { year: "1970", title: "Protocolo ALOHA", text: "Norman Abramson desarrolla la red de conmutación de paquetes por radio en Hawái, sentando las bases teóricas del CSMA/CD de Ethernet.", img: "https://images.unsplash.com/photo-1544256718-3bcf237f3974?w=400" },
+            { year: "1973", title: "Nace Ethernet experimental", text: "Robert Metcalfe escribe su famoso memorando en Xerox PARC describiendo el sistema de transmisión por cable coaxial.", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400" },
+            { year: "1980", title: "Consorcio DIX", text: "Digital, Intel y Xerox publican el primer borrador conjunto del estándar de Ethernet de 10 Mbps (Ethernet II o DIX).", img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400" },
+            { year: "1983", title: "Estandarización 802.3", text: "La IEEE adopta oficialmente la especificación de Ethernet bajo el nombre IEEE 802.3 para redes CSMA/CD de 10 Mbps.", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400" },
+            { year: "1984", title: "Capa de Enlace: LLC", text: "Se publica el estándar IEEE 802.2 para la subcapa de control de enlace lógico, logrando independencia del medio físico.", img: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400" },
+            { year: "1985", title: "Competencia: Token Ring", text: "IBM introduce el estándar IEEE 802.5 (Token Ring), una arquitectura basada en paso de testigo libre de colisiones.", img: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400" },
+            { year: "1987", title: "FDDI de Fibra Óptica", text: "Se estandariza la interfaz de datos distribuida por fibra, proveyendo enlaces de anillo doble tolerantes a fallos de 100 Mbps.", img: "https://images.unsplash.com/photo-1601524909162-be87252be298?w=400" },
+            { year: "1990", title: "Estándar 10BASE-T", text: "La especificación IEEE 802.3i introduce la transmisión por par trenzado de cobre con conectores RJ-45, transformando las oficinas.", img: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=400" },
+            { year: "1993", title: "Switches de Red LAN", text: "Kalpana populariza los conmutadores Ethernet, aislando los dominios de colisión por puerto y superando la limitación de los hubs.", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" },
+            { year: "1995", title: "Fast Ethernet 100 Mbps", text: "Se aprueba el estándar IEEE 802.3u (Fast Ethernet), multiplicando por diez la velocidad original sobre cableado Categoría 5.", img: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400" },
+            { year: "1997", title: "Nace Wi-Fi (802.11)", text: "IEEE publica el primer estándar de redes locales inalámbricas operando a 2 Mbps usando el protocolo CSMA/CA.", img: "https://images.unsplash.com/photo-1563770660941-20978e870e26?w=400" },
+            { year: "1998", title: "Gigabit Ethernet (Fibra)", text: "IEEE 802.3z implementa la velocidad de 1 Gbps usando canales de fibra óptica e interfaces de corto/largo alcance.", img: "https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?w=400" },
+            { year: "1999", title: "Gigabit sobre Cobre", text: "IEEE 802.3ab logra transmitir 1000BASE-T utilizando los 4 pares trenzados de cobre mediante complejas técnicas de codificación.", img: "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=400" },
+            { year: "2000", title: "Dúplex Completo (Full-Duplex)", text: "La conmutación permite transmitir y recibir simultáneamente, relegando el protocolo CSMA/CD a casos de compatibilidad.", img: "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=400" },
+            { year: "2002", title: "10 Gigabit Ethernet", text: "IEEE 802.3ae expande los horizontes de la interconexión de centros de datos de transporte de WAN con velocidades de 10 Gbps.", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400" },
+            { year: "2003", title: "Alimentación PoE", text: "Se introduce el estándar IEEE 802.3af (Power over Ethernet), permitiendo entregar energía y datos sobre el mismo par trenzado.", img: "https://images.unsplash.com/photo-1562408590-e32931084e23?w=400" },
+            { year: "2006", title: "10GBASE-T sobre Cobre", text: "IEEE 802.3an permite 10 Gbps sobre par trenzado balanceado de cobre Cat 6A, reduciendo drásticamente costos de cableado.", img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400" },
+            { year: "2010", title: "40G & 100G Ethernet", text: "Se publica el estándar IEEE 802.3ba, respondiendo al crecimiento masivo de tráfico IP de la nube mediante agregación de portadoras.", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400" },
+            { year: "2012", title: "Evolución ARP en IPv6", text: "ARP es sucedido en IPv6 por el protocolo Neighbor Discovery (NDP), el cual aprovecha mensajes de multidifusión de capa de enlace.", img: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=400" },
+            { year: "2015", title: "Ethernet de 25G y 50G", text: "Surgimiento de consorcios específicos para optimizar el cableado en los racks de servidores web intermedios.", img: "https://images.unsplash.com/photo-1548345680-f5475ea5df84?w=400" },
+            { year: "2017", title: "Terabit Ethernet (400G)", text: "La norma IEEE 802.3bs abre la compuerta a velocidades de 200 Gbps y 400 Gbps para las redes de proveedores de servicios globales.", img: "https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=400" },
+            { year: "2019", title: "Wi-Fi 6 (802.11ax)", text: "El estándar inalámbrico adopta técnicas multiusuario OFDMA provenientes de redes celulares para optimizar colisiones en el aire.", img: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400" },
+            { year: "2022", title: "Seguridad MACsec", text: "La adopción masiva de cifrado de capa 2 (IEEE 802.1AE) asegura los enlaces físicos contra la interceptación clandestina.", img: "https://images.unsplash.com/photo-1563986768494-0d2b4b323b5f?w=400" },
+            { year: "2024", title: "Hacia el Terabit y Más Allá", text: "El desarrollo del estándar IEEE 802.3df proyecta velocidades de hasta 1.6 Tbps para atender demandas críticas de Inteligencia Artificial.", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400" }
+        ];
+
+        const timeline = document.getElementById('timeline');
+
+        milestones.forEach((item, index) => {
+            const isLeft = index % 2 === 0;
+            const container = document.createElement('div');
+            container.className = `milestone-item flex flex-col md:flex-row items-center w-full`;
+            
+            container.innerHTML = `
+                <div class="w-full md:w-1/2 flex justify-center md:justify-end ${isLeft ? 'order-2 md:order-1' : 'order-3 md:order-1 md:invisible'}">
+                    <div class="milestone-card w-full max-w-sm ml-12 md:ml-0 md:mr-12">
+                        <img src="${item.img}" alt="${item.title}" class="milestone-img" onerror="this.src='https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600'">
+                        <div class="p-5">
+                            <span class="text-xs font-bold text-secondary uppercase tracking-widest">${item.year}</span>
+                            <h4 class="text-xl font-black text-primary mt-1">${item.title}</h4>
+                            <p class="text-sm text-gray-600 mt-2 leading-relaxed text-justify">${item.text}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dot shadow-lg order-1 md:order-2"></div>
+                <div class="w-full md:w-1/2 flex justify-center md:justify-start ${!isLeft ? 'order-2 md:order-3' : 'order-3 md:order-3 md:invisible'}">
+                    <div class="milestone-card w-full max-w-sm ml-12 md:ml-12 md:mr-0">
+                        <img src="${item.img}" alt="${item.title}" class="milestone-img" onerror="this.src='https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600'">
+                        <div class="p-5">
+                            <span class="text-xs font-bold text-secondary uppercase tracking-widest">${item.year}</span>
+                            <h4 class="text-xl font-black text-primary mt-1">${item.title}</h4>
+                            <p class="text-sm text-gray-600 mt-2 leading-relaxed text-justify">${item.text}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            timeline.appendChild(container);
+        });
+    </script>
+</body>
+</html>
