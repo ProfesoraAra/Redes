@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diseño e implementación de redes LAN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --pantone-7545: #425563;
+            --pantone-465: #B9975B;
+            --footer-blue: #465973;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: var(--pantone-7545);
+        }
+
+        /* Utilidades de color personalizadas */
+        .bg-primary { background-color: var(--pantone-7545); }
+        .text-primary { color: var(--pantone-7545); }
+        .text-secondary { color: var(--pantone-465); }
+        .border-secondary { border-color: var(--pantone-465); }
+        .bg-unrc-blue { background-color: var(--pantone-7545); }
+        .text-unrc-blue { color: var(--pantone-7545); }
+        .bg-unrc-gold { background-color: var(--pantone-465); }
+        .text-unrc-gold { color: var(--pantone-465); }
+        .border-unrc-gold { border-color: var(--pantone-465); }
+        .border-unrc-blue { border-color: var(--pantone-7545); }
+
+        .card-shadow {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card-shadow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-wrapper-large {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            margin: 0 auto;
+        }
+
+        .chart-wrapper-med {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            margin: 0 auto;
+        }
+
+        .wire {
+            height: 20px;
+            width: 100%;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Efecto de menú personalizado */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--pantone-465);
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover {
+            color: var(--pantone-465);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .nav-item:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased scroll-smooth">
+
+    <!-- Header Blanco -->
+    <header class="sticky top-0 z-50 bg-white border-b-4 border-secondary shadow-md">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo UNRC -->
+            <div class="flex items-center">
+                <img src="imagenes/unrc.png" 
+                     alt="Logo UNRC" class="h-16 w-auto object-contain">
+            </div>
+            <nav>
+                <a href="index.html" class="nav-item text-primary font-bold text-sm uppercase tracking-wide">
+                    Inicio
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section (Exactamente igual a la de referencia) -->
+    <section class="bg-primary text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white"></path>
+            </svg>
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h2 class="text-4xl md:text-6xl font-black mb-4 tracking-tighter">Diseño e implementación de redes LAN</h2>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-16 max-w-7xl">
+        
+        <!-- Cableado Estructurado -->
+        <section class="mb-24">
+            <div class="flex items-center gap-6 mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-unrc-blue tracking-tight">Cableado estructurado</h2>
+                <div class="flex-grow h-1 bg-gradient-to-r from-unrc-gold to-transparent"></div>
+            </div>
+
+            <p class="text-lg md:text-xl text-gray-700 leading-loose mb-16 max-w-5xl">
+                El cableado estructurado define la arquitectura física estandarizada de telecomunicaciones para un edificio. Mediante normas estrictas de distribución y aislamiento de señales, este enfoque reduce de manera drástica los tiempos de inactividad, facilitando reparaciones veloces y garantizando un ancho de banda óptimo y escalable a largo plazo.
+            </p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+                <!-- Tarjeta Informativa de Subsistemas -->
+                <div class="lg:col-span-7 card-shadow p-8 border-t-8 border-unrc-gold">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="network" class="w-8 h-8 text-unrc-gold"></i>
+                        <h3 class="font-black text-2xl text-unrc-blue">Los 6 Subsistemas del Estándar</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-600 text-sm">
+                        <div class="space-y-4">
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <span class="font-black text-unrc-blue block">1. Facilidades de Entrada (EF)</span>
+                                Punto frontera donde los servicios externos (ISP) ingresan al edificio.
+                            </div>
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <span class="font-black text-unrc-blue block">2. Cuarto de Equipos (ER)</span>
+                                Espacio centralizado (MDF) que alberga los switches core, routers y servidores del edificio.
+                            </div>
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <span class="font-black text-unrc-blue block">3. Cableado de Backbone</span>
+                                Cableado vertical que interconecta el cuarto de equipos central con los de telecomunicaciones.
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <span class="font-black text-unrc-blue block">4. Cuarto de Telecomunicaciones (TR)</span>
+                                Gabinetes o habitaciones intermedias (IDF) donde finaliza el cableado horizontal.
+                            </div>
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <span class="font-black text-unrc-blue block">5. Cableado Horizontal</span>
+                                El trayecto de cobre o fibra desde el cuarto de telecomunicaciones hasta las tomas de usuario.
+                            </div>
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <span class="font-black text-unrc-blue block">6. Área de Trabajo (WA)</span>
+                                Componentes finales de conexión que enlazan los hosts (PCs, teléfonos) con las tomas de pared.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráfica de Origen de Fallas -->
+                <div class="lg:col-span-5 card-shadow p-8 border-t-8 border-unrc-blue">
+                    <h3 class="font-black text-xl text-unrc-blue mb-2 text-center">Fallas típicas en redes LAN</h3>
+                    <p class="text-xs text-gray-500 mb-6 text-center">El cableado no estructurado es el causante de la mayoría de pérdidas de paquetes.</p>
+                    <div class="chart-wrapper-med">
+                        <canvas id="cablingFaultsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estándares Vigentes (Compactado sin espacios muertos) -->
+        <section class="mb-24 bg-gray-200/50 -mx-6 px-6 py-16 rounded-[3rem] border-y border-gray-300">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-unrc-blue tracking-tight">Estándares vigentes</h2>
+                <p class="text-sm text-unrc-gold font-bold tracking-widest uppercase mt-2">Gobernanza global y especificaciones de cobre</p>
+                <div class="w-24 h-2 bg-unrc-gold mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <!-- Tarjetas de estándares compactadas y unificadas -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <!-- Tarjeta 1 -->
+                <div class="card-shadow p-6 border-t-8 border-unrc-gold bg-white flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-unrc-blue/10 rounded-xl text-unrc-blue">
+                                <i data-lucide="shield-check" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="font-black text-lg text-unrc-blue">Organismos de Control</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Los estándares son normados por la <strong>ANSI/TIA/EIA</strong> en América, la <strong>ISO/IEC 11801</strong> a nivel internacional y el consorcio de ingenieros de la <strong>IEEE</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div class="card-shadow p-6 border-t-8 border-unrc-blue bg-white flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-unrc-gold/10 rounded-xl text-unrc-gold">
+                                <i data-lucide="zap" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="font-black text-lg text-unrc-blue">Categorías UTP</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            De la Categoría 5e (100 MHz) hasta la Categoría 8 (2000 MHz), cada nivel determina la velocidad de transmisión, resistencia al ruido electromagnético y frecuencias operativas permitidas.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3 -->
+                <div class="card-shadow p-6 border-t-8 border-unrc-gold bg-white flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-unrc-blue/10 rounded-xl text-unrc-blue">
+                                <i data-lucide="ruler" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="font-black text-lg text-unrc-blue">Límite de los 100 Metros</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            El estándar horizontal limita el cable de cobre a 90 metros fijos de canal más 10 metros máximos combinados para cables de conexión (patch cords) en los extremos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficas de la sección -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-6 bg-white p-8 rounded-3xl shadow-sm border border-gray-200">
+                    <h4 class="font-black text-unrc-blue tracking-tight text-lg mb-2">Frecuencia por categoría UTP</h4>
+                    <p class="text-xs text-gray-500 mb-6">Frecuencia en Megahercios (MHz) permitida bajo la norma ANSI/TIA.</p>
+                    <div class="chart-wrapper-med">
+                        <canvas id="bandwidthChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 bg-white p-8 rounded-3xl shadow-sm border border-gray-200">
+                    <h4 class="font-black text-unrc-blue tracking-tight text-lg mb-2">Estándares de ponchado de cables</h4>
+                    <p class="text-xs text-gray-500 mb-6">Comparativa de código de colores en los conectores RJ-45.</p>
+                    
+                    <div class="grid grid-cols-2 gap-6 mt-4">
+                        <div>
+                            <h5 class="text-center font-bold text-xs text-unrc-blue uppercase mb-3">T568A</h5>
+                            <div class="wire" style="background: repeating-linear-gradient(45deg, #10b981, #10b981 8px, #ffffff 8px, #ffffff 16px);"></div>
+                            <div class="wire" style="background: #10b981;"></div>
+                            <div class="wire" style="background: repeating-linear-gradient(45deg, #f97316, #f97316 8px, #ffffff 8px, #ffffff 16px);"></div>
+                            <div class="wire" style="background: #3b82f6;"></div>
+                            <div class="wire" style="background: repeating-linear-gradient(45deg, #3b82f6, #3b82f6 8px, #ffffff 8px, #ffffff 16px);"></div>
+                            <div class="wire" style="background: #f97316;"></div>
+                            <div class="wire" style="background: repeating-linear-gradient(45deg, #78350f, #78350f 8px, #ffffff 8px, #ffffff 16px);"></div>
+                            <div class="wire" style="background: #78350f;"></div>
+                        </div>
+                        <div>
+                            <h5 class="text-center font-bold text-xs text-unrc-blue uppercase mb-3">T568B</h5>
+                            <div class="wire" style="background: repeating-linear-gradient(45deg, #f97316, #f97316 8px, #ffffff 8px, #ffffff 16px);"></div>
+                            <div class="wire" style="background: #f97316;"></div>
+                            <div class="wire" style="background: repeating-linear-gradient(45deg, #10b981, #10b981 8px, #ffffff 8px, #ffffff 16px);"></div>
+                            <div class="wire" style="background: #3b82f6;"></div>
+                            <div class="wire" style="background: repeating-linear-gradient(45deg, #3b82f6, #3b82f6 8px, #ffffff 8px, #ffffff 16px);"></div>
+                            <div class="wire" style="background: #10b981;"></div>
+                            <div class="wire" style="background: repeating-linear-gradient(45deg, #78350f, #78350f 8px, #ffffff 8px, #ffffff 16px);"></div>
+                            <div class="wire" style="background: #78350f;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diseño y Documentación de Redes -->
+        <section class="mb-24 animate-fade-in">
+            <div class="flex items-center gap-6 mb-16">
+                <h2 class="text-3xl md:text-4xl font-black text-unrc-blue tracking-tight text-right">Diseño y documentación básica de redes</h2>
+                <div class="flex-grow h-1 bg-gradient-to-l from-unrc-gold to-transparent"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                <!-- Listas Informativas -->
+                <div class="lg:col-span-6 space-y-6">
+                    <p class="text-base text-gray-700 leading-relaxed mb-4">
+                        La fase de planificación logística y documentación técnica evita el estancamiento de las redes. Registrar minuciosamente cada cambio garantiza que el área de tecnologías de la información actúe velozmente ante fallas.
+                    </p>
+                    
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex gap-6 items-start">
+                        <div class="p-3 bg-unrc-blue/10 rounded-xl">
+                            <i data-lucide="git-branch" class="w-6 h-6 text-unrc-blue"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-black text-lg text-unrc-blue mb-1">Topología Lógica</h4>
+                            <p class="text-sm text-gray-500">Mapeo del flujo de datos, asignación del esquema IP, división por VLANs de seguridad y ruteo dinámico.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex gap-6 items-start">
+                        <div class="p-3 bg-unrc-gold/10 rounded-xl">
+                            <i data-lucide="map-pin" class="w-6 h-6 text-unrc-gold"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-black text-lg text-unrc-blue mb-1">Topología Física</h4>
+                            <p class="text-sm text-gray-500">Representación a escala del plano arquitectónico, localización de bandejas de red, ductos y planos de racks de switches.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex gap-6 items-start">
+                        <div class="p-3 bg-unrc-blue/10 rounded-xl">
+                            <i data-lucide="tag" class="w-6 h-6 text-unrc-blue"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-black text-lg text-unrc-blue mb-1">Administración y Etiquetado</h4>
+                            <p class="text-sm text-gray-500">Cumplimiento con la norma <strong>ANSI/TIA-606</strong> para rotular sistemáticamente cada puerto, rack, patch panel y cable físico.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráfica Radar -->
+                <div class="lg:col-span-6 bg-white p-10 rounded-[2rem] shadow-inner border border-gray-200">
+                    <h4 class="text-unrc-blue font-black text-center text-sm uppercase tracking-widest mb-2">Evaluación del Diseño Eficiente</h4>
+                    <p class="text-center text-xs text-gray-400 mb-8">Puntuación idealizada de los pilares críticos a considerar al desplegar redes LAN.</p>
+                    <div class="chart-wrapper-large">
+                        <canvas id="designChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Azul UNRC -->
+    <footer class="py-12 text-white border-t-8 border-secondary" style="background-color: var(--footer-blue);">
+        <div class="container mx-auto px-4 text-center space-y-2">
+            <p class="text-lg font-bold uppercase tracking-widest text-white leading-tight">Universidad Nacional Rosario Castellanos</p>
+            <p class="text-sm font-light opacity-80">Material creado para la licenciatura a distancia LTIC</p>
+            <p class="text-sm font-bold tracking-[0.3em] text-secondary">UCA: Redes | Módulo 4</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Envolver etiquetas largas de Chart.js
+        const wrapLabel = (label) => {
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > 16) {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const tooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // 1. Gráfica Origen de Fallas
+        const ctxFaults = document.getElementById('cablingFaultsChart').getContext('2d');
+        new Chart(ctxFaults, {
+            type: 'doughnut',
+            data: {
+                labels: ['Medios de Red (Físico)', 'Lógica (Configuración)', 'Hardware de Red'].map(wrapLabel),
+                datasets: [{
+                    data: [72, 18, 10],
+                    backgroundColor: ['#425563', '#B9975B', '#8fa1b5'],
+                    borderColor: '#ffffff',
+                    borderWidth: 3,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#425563', boxWidth: 15, padding: 15 } },
+                    tooltip: tooltipConfig
+                },
+                cutout: '65%'
+            }
+        });
+
+        // 2. Gráfica Frecuencia por Categoría
+        const ctxBandwidth = document.getElementById('bandwidthChart').getContext('2d');
+        new Chart(ctxBandwidth, {
+            type: 'bar',
+            data: {
+                labels: ['Categoría 5e', 'Categoría 6', 'Categoría 6a', 'Categoría 7', 'Categoría 8'].map(wrapLabel),
+                datasets: [{
+                    label: 'Frecuencia (MHz)',
+                    data: [100, 250, 500, 600, 2000],
+                    backgroundColor: ['#425563', '#B9975B', '#425563', '#B9975B', '#425563'],
+                    borderRadius: 8,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'MHz', font: { weight: 'bold' }, color: '#425563' },
+                        ticks: { color: '#425563' }
+                    },
+                    x: {
+                        ticks: { color: '#425563' }
+                    }
+                }
+            }
+        });
+
+        // 3. Gráfica Radar de Pilares de Diseño
+        const ctxDesign = document.getElementById('designChart').getContext('2d');
+        new Chart(ctxDesign, {
+            type: 'radar',
+            data: {
+                labels: [
+                    'Escalabilidad', 'Seguridad Física', 'Facilidad de Troubleshooting', 'Eficiencia Térmica', 'Tolerancia a Fallas', 'Plan de direccionamiento'
+                ].map(wrapLabel),
+                datasets: [
+                    {
+                        label: 'Desempeño Ideal',
+                        data: [10, 9, 8, 7, 9, 10],
+                        borderColor: '#425563',
+                        backgroundColor: 'rgba(66, 85, 99, 0.15)',
+                        borderWidth: 3,
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Desempeño sin Estructurar',
+                        data: [3, 4, 2, 3, 2, 5],
+                        borderColor: '#B9975B',
+                        backgroundColor: 'rgba(185, 151, 91, 0.25)',
+                        borderWidth: 3,
+                        pointRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#425563' } },
+                    tooltip: tooltipConfig
+                },
+                scales: {
+                    r: {
+                        suggestedMin: 0,
+                        suggestedMax: 10,
+                        ticks: { display: false },
+                        pointLabels: {
+                            font: { size: 11, weight: 'bold' },
+                            color: '#425563'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguridad y hardening en la capa de acceso LAN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --pantone-7545: #425563;
+            --pantone-465: #B9975B;
+            --footer-blue: #465973;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: var(--pantone-7545);
+        }
+
+        /* Utilidades de color personalizadas */
+        .bg-primary { background-color: var(--pantone-7545); }
+        .text-primary { color: var(--pantone-7545); }
+        .text-secondary { color: var(--pantone-465); }
+        .border-secondary { border-color: var(--pantone-465); }
+        .bg-unrc-blue { background-color: var(--pantone-7545); }
+        .text-unrc-blue { color: var(--pantone-7545); }
+        .bg-unrc-gold { background-color: var(--pantone-465); }
+        .text-unrc-gold { color: var(--pantone-465); }
+        .border-unrc-gold { border-color: var(--pantone-465); }
+        .border-unrc-blue { border-color: var(--pantone-7545); }
+
+        .card-shadow {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card-shadow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-wrapper-large {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            margin: 0 auto;
+        }
+
+        .chart-wrapper-med {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            margin: 0 auto;
+        }
+
+        .wire {
+            height: 20px;
+            width: 100%;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Efecto de menú personalizado */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--pantone-465);
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover {
+            color: var(--pantone-465);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .nav-item:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased scroll-smooth">
+
+    <!-- Header Blanco -->
+    <header class="sticky top-0 z-50 bg-white border-b-4 border-secondary shadow-md">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo UNRC -->
+            <div class="flex items-center">
+                <img src="imagenes/unrc.png" 
+                     alt="Logo UNRC" class="h-16 w-auto object-contain">
+            </div>
+            <nav>
+                <a href="index.html" class="nav-item text-primary font-bold text-sm uppercase tracking-wide">
+                    Inicio
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section (Exactamente igual a la de referencia) -->
+    <section class="bg-primary text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white"></path>
+            </svg>
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h2 class="text-4xl md:text-6xl font-black mb-4 tracking-tighter">Seguridad y hardening en la capa de acceso LAN</h2>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-16 max-w-7xl">
+        
+        <section id="contrasenas" class="mb-24 scroll-mt-24">
+            <div class="flex items-center gap-6 mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-unrc-blue tracking-tight">Configuración de contraseña</h2>
+                <div class="flex-grow h-1 bg-gradient-to-r from-unrc-gold to-transparent"></div>
+            </div>
+
+            <p class="text-lg md:text-xl text-gray-700 leading-loose mb-16 max-w-5xl">
+                La primera línea de defensa de cualquier dispositivo de red (switches o routers) reside en el endurecimiento de sus accesos lógicos de administración. El sistema operativo Cisco IOS permite configurar niveles independientes de acceso para proteger el plano de control, restringir la terminal interactiva (CLI) y evitar intrusiones no autorizadas por fuerza bruta.
+            </p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+                <div class="lg:col-span-7 card-shadow p-8 border-t-8 border-unrc-gold">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="key-round" class="w-8 h-8 text-unrc-gold"></i>
+                        <h3 class="font-black text-2xl text-unrc-blue">Directivas de Acceso y Hardening</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-600 text-sm">
+                        <div class="space-y-4">
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                <span class="font-black text-unrc-blue block text-base mb-1">Clave de Privilegio (Secret)</span>
+                                Asegura el paso al modo de ejecución privilegiado. El uso de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-unrc-gold">enable secret</code> aplica cifrado seguro unidireccional (SHA-256 o MD5), suplantando al vulnerable <code class="bg-gray-100 px-1 rounded text-red-500">enable password</code>.
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                <span class="font-black text-unrc-blue block text-base mb-1">Cifrado Tipo 7</span>
+                                El comando <code class="bg-gray-100 px-1.5 py-0.5 rounded text-unrc-gold">service password-encryption</code> aplica una máscara reversible a todas las claves del sistema que se visualizan en texto plano al ejecutar un volcado de la configuración activa.
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                <span class="font-black text-unrc-blue block text-base mb-1">Longitud Mínima</span>
+                                Forzar claves robustas mediante el comando global <code class="bg-gray-100 px-1.5 py-0.5 rounded text-unrc-gold">security passwords min-length [n]</code> evita la configuración de claves débiles o por defecto.
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                <span class="font-black text-unrc-blue block text-base mb-1">Bloqueo de Fuerza Bruta</span>
+                                La sentencia de configuración <code class="bg-gray-100 px-1.5 py-0.5 rounded text-unrc-gold">login block-for [seg] attempts [n] within [seg]</code> inhabilita temporalmente los intentos de sesión sospechosos por un periodo de tiempo determinado.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 card-shadow p-8 border-t-8 border-unrc-blue">
+                    <h3 class="font-black text-xl text-unrc-blue mb-2 text-center">Resistencia contra Fuerza Bruta</h3>
+                    <p class="text-xs text-gray-500 mb-6 text-center">Eficacia de mitigación (Tasa de bloqueo) al combinar directivas de complejidad de contraseñas.</p>
+                    <div class="chart-wrapper-med">
+                        <canvas id="passwordChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="herramientas" class="mb-24 bg-gray-200/50 -mx-6 px-6 py-16 rounded-[3rem] border-y border-gray-300 scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-black text-unrc-blue tracking-tight">Herramientas de seguridad</h2>
+                <p class="text-sm text-unrc-gold font-bold tracking-widest uppercase mt-2">Cifrado, autenticación centralizada e integridad de red</p>
+                <div class="w-24 h-2 bg-unrc-gold mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="card-shadow p-6 border-t-8 border-unrc-gold bg-white flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-unrc-blue/10 rounded-xl text-unrc-blue">
+                                <i data-lucide="shield" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="font-black text-lg text-unrc-blue">SSH vs Telnet</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            A diferencia del protocolo Telnet, que transmite credenciales y comandos en texto plano, SSH implementa criptografía RSA asimétrica para asegurar la confidencialidad absoluta de la sesión de administración a través del puerto 22.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card-shadow p-6 border-t-8 border-unrc-blue bg-white flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-unrc-gold/10 rounded-xl text-unrc-gold">
+                                <i data-lucide="users" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="font-black text-lg text-unrc-blue">Esquema AAA</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Proporciona un marco de control de acceso centralizado. <strong>Autenticación</strong> (valida quién eres), <strong>Autorización</strong> (determina qué privilegios posees y qué comandos puedes aplicar) y <strong>Auditoría</strong> (mantiene registros de todas las acciones).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card-shadow p-6 border-t-8 border-unrc-gold bg-white flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-unrc-blue/10 rounded-xl text-unrc-blue">
+                                <i data-lucide="activity" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="font-black text-lg text-unrc-blue">Inspección DHCP/ARP</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Medidas de protección de Capa 2 contra servidores DHCP piratas (DHCP Snooping) y envenenamiento de tablas de traducción de direcciones (Dynamic ARP Inspection), mitigando ataques Man-In-The-Middle.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-7 bg-white p-8 rounded-3xl shadow-sm border border-gray-200">
+                    <h4 class="font-black text-unrc-blue tracking-tight text-lg mb-2">Comandos Esenciales para Configurar SSH</h4>
+                    <p class="text-xs text-gray-500 mb-6">Secuencia recomendada para la habilitación de una consola remota cifrada sobre IOS.</p>
+                    <div class="bg-slate-900 text-slate-100 p-5 rounded-2xl font-mono text-xs overflow-x-auto leading-relaxed border border-slate-800">
+                        <span class="text-cyan-400">Switch(config)#</span> hostname SW-PRINCIPAL<br>
+                        <span class="text-cyan-400">SW-PRINCIPAL(config)#</span> ip domain-name unrc.edu.mx<br>
+                        <span class="text-cyan-400">SW-PRINCIPAL(config)#</span> crypto key generate rsa <span class="text-slate-400">(Sugerido: 1024 o 2048)</span><br>
+                        <span class="text-cyan-400">SW-PRINCIPAL(config)#</span> username admin privilege 15 secret CLAVE_SEGURA<br>
+                        <span class="text-cyan-400">SW-PRINCIPAL(config)#</span> line vty 0 15<br>
+                        <span class="text-cyan-400">SW-PRINCIPAL(config-line)#</span> transport input ssh<br>
+                        <span class="text-cyan-400">SW-PRINCIPAL(config-line)#</span> login local
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 bg-white p-8 rounded-3xl shadow-sm border border-gray-200">
+                    <h4 class="font-black text-unrc-blue tracking-tight text-lg mb-2">Comparativa de Seguridad: SSH vs. Telnet</h4>
+                    <p class="text-xs text-gray-500 mb-6">Mapeo de robustez estructural y características críticas de seguridad.</p>
+                    <div class="chart-wrapper-med">
+                        <canvas id="sshVsTelnetChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="puertos" class="mb-24 scroll-mt-24">
+            <div class="flex items-center gap-6 mb-16">
+                <h2 class="text-3xl md:text-4xl font-black text-unrc-blue tracking-tight text-right">Configuración de la seguridad de los puertos</h2>
+                <div class="flex-grow h-1 bg-gradient-to-l from-unrc-gold to-transparent"></div>
+            </div>
+
+            <p class="text-lg md:text-xl text-gray-700 leading-loose mb-16 max-w-5xl">
+                La seguridad de puertos (Port Security) limita de manera activa la cantidad de direcciones MAC permitidas en una interfaz física de acceso del switch. Esta directiva neutraliza ataques devastadores de Capa 2 como el desbordamiento de tablas de direcciones MAC (MAC Flooding) y el uso no autorizado de interfaces físicas expuestas en áreas comunes.
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch mb-12">
+                <div class="lg:col-span-5 bg-white p-10 rounded-[2rem] shadow-inner border border-gray-200 flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-unrc-blue font-black text-lg mb-2">Modos de Aprendizaje MAC</h4>
+                        <p class="text-xs text-gray-400 mb-6">Tipos de registro de direcciones en interfaces con Port-Security.</p>
+                        
+                        <div class="space-y-4 text-sm">
+                            <div class="p-3 bg-gray-50 rounded-xl border-l-4 border-unrc-blue">
+                                <strong class="text-unrc-blue block">Estático:</strong> 
+                                Definido manualmente por comandos en la CLI. Almacenado de forma permanente en la configuración del dispositivo.
+                            </div>
+                            <div class="p-3 bg-gray-50 rounded-xl border-l-4 border-unrc-gold">
+                                <strong class="text-unrc-blue block">Dinámico:</strong> 
+                                Registrado automáticamente en la tabla MAC activa del switch. Se pierde ante un reinicio del hardware.
+                            </div>
+                            <div class="p-3 bg-gray-50 rounded-xl border-l-4 border-unrc-blue">
+                                <strong class="text-unrc-blue block">Sticky (Adhesivo):</strong> 
+                                El dispositivo aprende la dirección de forma dinámica y la añade de inmediato a la configuración activa (running-config).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 bg-white p-10 rounded-[2rem] shadow-inner border border-gray-200 flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-unrc-blue font-black text-lg mb-2">Modos de Violación de Puerto</h4>
+                        <p class="text-xs text-gray-400 mb-6">Comportamiento operativo detallado para cada modo ante la detección de una dirección MAC intrusa.</p>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-100 text-unrc-blue border-b border-gray-200">
+                                        <th class="p-3 font-black">Acción Operativa</th>
+                                        <th class="p-3 font-black text-center text-emerald-600">Protect</th>
+                                        <th class="p-3 font-black text-center text-amber-600">Restrict</th>
+                                        <th class="p-3 font-black text-center text-red-600">Shutdown</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-600">
+                                    <tr class="border-b border-gray-100">
+                                        <td class="p-3 font-bold">Descarta tráfico intruso</td>
+                                        <td class="p-3 text-center text-emerald-600">✅ Sí</td>
+                                        <td class="p-3 text-center text-emerald-600">✅ Sí</td>
+                                        <td class="p-3 text-center text-emerald-600">✅ Sí</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="p-3 font-bold">Genera registro Syslog</td>
+                                        <td class="p-3 text-center text-gray-400">❌ No</td>
+                                        <td class="p-3 text-center text-emerald-600">✅ Sí</td>
+                                        <td class="p-3 text-center text-emerald-600">✅ Sí</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="p-3 font-bold">Incrementa contador de alertas</td>
+                                        <td class="p-3 text-center text-gray-400">❌ No</td>
+                                        <td class="p-3 text-center text-emerald-600">✅ Sí</td>
+                                        <td class="p-3 text-center text-emerald-600">✅ Sí</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold">Deshabilita el puerto físico</td>
+                                        <td class="p-3 text-center text-gray-400">❌ No</td>
+                                        <td class="p-3 text-center text-gray-400">❌ No</td>
+                                        <td class="p-3 text-center text-red-600 font-bold">✅ Sí (err-disabled)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-7 bg-white p-8 rounded-3xl shadow-sm border border-gray-200">
+                    <h4 class="font-black text-unrc-blue tracking-tight text-lg mb-2">Comandos para Implementar Port Security</h4>
+                    <p class="text-xs text-gray-500 mb-6">Implementación de un puerto seguro limitando accesos con aprendizaje dinámico persistente.</p>
+                    <div class="bg-slate-900 text-slate-100 p-5 rounded-2xl font-mono text-xs overflow-x-auto leading-relaxed border border-slate-800">
+                        <span class="text-cyan-400">SW-PRINCIPAL(config)#</span> interface FastEthernet 0/1<br>
+                        <span class="text-cyan-400">SW-PRINCIPAL(config-if)#</span> switchport mode access<br>
+                        <span class="text-cyan-400">SW-PRINCIPAL(config-if)#</span> switchport port-security<br>
+                        <span class="text-cyan-400">SW-PRINCIPAL(config-if)#</span> switchport port-security maximum 2<br>
+                        <span class="text-cyan-400">SW-PRINCIPAL(config-if)#</span> switchport port-security mac-address sticky<br>
+                        <span class="text-cyan-400">SW-PRINCIPAL(config-if)#</span> switchport port-security violation restrict
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 bg-white p-8 rounded-3xl shadow-sm border border-gray-200">
+                    <h4 class="font-black text-unrc-blue tracking-tight text-lg mb-2">Distribución de Modos en la Industria</h4>
+                    <p class="text-xs text-gray-500 mb-6">Frecuencia recomendada de implementación de políticas de violación.</p>
+                    <div class="chart-wrapper-med">
+                        <canvas id="violationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Azul UNRC -->
+    <footer class="py-12 text-white border-t-8 border-secondary" style="background-color: var(--footer-blue);">
+        <div class="container mx-auto px-4 text-center space-y-2">
+            <p class="text-lg font-bold uppercase tracking-widest text-white leading-tight">Universidad Nacional Rosario Castellanos</p>
+            <p class="text-sm font-light opacity-80">Material creado para la licenciatura a distancia LTIC</p>
+            <p class="text-sm font-bold tracking-[0.3em] text-secondary">UCA: Redes | Módulo 4</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const wrapLabel = (label) => {
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > 16) {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const customTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        const ctxPassword = document.getElementById('passwordChart').getContext('2d');
+        new Chart(ctxPassword, {
+            type: 'bar',
+            data: {
+                labels: ['Sin Políticas', 'Solo Encripción T7', 'Claves Largas', 'Fuerza Bruta Bloqueada'].map(wrapLabel),
+                datasets: [{
+                    label: 'Vulnerabilidad Residual (%)',
+                    data: [95, 75, 30, 5],
+                    backgroundColor: ['#425563', '#B9975B', '#425563', '#B9975B'],
+                    borderRadius: 8,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: customTooltipConfig
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: { display: true, text: 'Exposición a Intrusiones (%)', font: { weight: 'bold' }, color: '#425563' },
+                        ticks: { color: '#425563' }
+                    },
+                    x: {
+                        ticks: { color: '#425563' }
+                    }
+                }
+            }
+        });
+
+        const ctxSsh = document.getElementById('sshVsTelnetChart').getContext('2d');
+        new Chart(ctxSsh, {
+            type: 'radar',
+            data: {
+                labels: ['Cifrado Total', 'Control de Acceso', 'Integridad Datos', 'Resistencia Sniffing', 'Estandarización'].map(wrapLabel),
+                datasets: [
+                    {
+                        label: 'SSH (Cifrado)',
+                        data: [10, 9, 9, 10, 8],
+                        borderColor: '#425563',
+                        backgroundColor: 'rgba(66, 85, 99, 0.15)',
+                        borderWidth: 3,
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Telnet (Texto Claro)',
+                        data: [0, 5, 2, 0, 10],
+                        borderColor: '#B9975B',
+                        backgroundColor: 'rgba(185, 151, 91, 0.25)',
+                        borderWidth: 3,
+                        pointRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#425563' } },
+                    tooltip: customTooltipConfig
+                },
+                scales: {
+                    r: {
+                        suggestedMin: 0,
+                        suggestedMax: 10,
+                        ticks: { display: false },
+                        pointLabels: {
+                            font: { size: 10, weight: 'bold' },
+                            color: '#425563'
+                        }
+                    }
+                }
+            }
+        });
+
+        const ctxViolation = document.getElementById('violationChart').getContext('2d');
+        new Chart(ctxViolation, {
+            type: 'doughnut',
+            data: {
+                labels: ['Shutdown (Recomendado)', 'Restrict (Auditoría activa)', 'Protect (Pasivo/Aislado)'].map(wrapLabel),
+                datasets: [{
+                    data: [70, 25, 5],
+                    backgroundColor: ['#425563', '#B9975B', '#8fa1b5'],
+                    borderColor: '#ffffff',
+                    borderWidth: 3,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#425563', boxWidth: 15, padding: 12 } },
+                    tooltip: customTooltipConfig
+                },
+                cutout: '65%'
+            }
+        });
+    </script>
+</body>
+</html>
